@@ -1,12 +1,15 @@
 import asyncio
+import json
+import os
 
 from dotenv import load_dotenv
+from telegram import Update
 from telegram.ext import Application
 
 load_dotenv()  # take environment variables from .env.
 
 
-application = Application.builder().token(TELEGRAM_API_KEY).build()
+application = Application.builder().token(os.getenv("TOKEN")).build()
 
 
 def lambda_handler(event, context):
