@@ -3,8 +3,22 @@ import json
 import os
 
 from dotenv import load_dotenv
-from telegram import Update
-from telegram.ext import Application
+from telegram import Update, constants
+from telegram.ext import (
+    Application,
+    CallbackContext,
+    CallbackQueryHandler,
+    CommandHandler,
+    ContextTypes,
+    ConversationHandler,
+    MessageHandler,
+    filters,
+)
+
+from handlers.callbackQuery import meta_inline_menu
+from handlers.commands import home
+from keyboards import CAMPUS_KEYBOARD
+from messages import GREETING_NEW
 
 load_dotenv()  # take environment variables from .env.
 
@@ -18,6 +32,7 @@ def lambda_handler(event, context):
 
 async def main(event, context):
     # Add conversation, command, and any other handlers
+    add_user_handlers()
 
     try:
         await application.initialize()
@@ -29,3 +44,25 @@ async def main(event, context):
 
     except Exception as exc:
         return {"statusCode": 500, "body": "Failure"}
+
+
+def add_user_handlers():
+    # Track commands
+    conv_handler = ConversationHandler(
+        entry_points=[
+            CommandHandler("start", home),
+            CallbackQueryHandler(meta_inline_menu),
+        ],
+        states={},
+        fallbacks=[
+            CommandHandler("start", home),
+        ],
+        per_message=False,
+        per_user=True,
+    )
+    application.add_handler(conv_handler)
+
+
+if __name__ == "__main__":
+    add_user_handlers()
+    application.run_polling()
