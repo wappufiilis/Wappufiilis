@@ -15,6 +15,11 @@ from telegram.ext import (
     filters,
 )
 
+from handlers.callbackQuery import meta_inline_menu
+from handlers.commands import home
+from keyboards import CAMPUS_KEYBOARD
+from messages import GREETING_NEW
+
 load_dotenv()  # take environment variables from .env.
 
 
@@ -41,18 +46,13 @@ async def main(event, context):
         return {"statusCode": 500, "body": "Failure"}
 
 
-async def home(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    await update.message.reply_text(
-        text=":D",
-        parse_mode=constants.ParseMode.MARKDOWN_V2,
-    )
-    return -1
-
-
 def add_user_handlers():
     # Track commands
     conv_handler = ConversationHandler(
-        entry_points=[CommandHandler("start", home)],
+        entry_points=[
+            CommandHandler("start", home),
+            CallbackQueryHandler(meta_inline_menu),
+        ],
         states={},
         fallbacks=[
             CommandHandler("start", home),
