@@ -27,6 +27,7 @@ def lambda_handler(event, context):
 
 async def main(event, context):
     # Add conversation, command, and any other handlers
+    add_user_handlers()
 
     try:
         await application.initialize()
