@@ -1,3 +1,14 @@
+terraform {
+  backend "s3" {
+    bucket = "tf-remote-state20230406220833131500000002"
+    key            = "this-remote-state-bucket/terraform.tfstate"
+    region         = "eu-north-1"
+    encrypt        = true
+    kms_key_id     = "dca8ba1b-a9cb-4f06-be83-4ce544268760"
+    dynamodb_table = "tf-remote-state-lock"
+  }
+}
+
 provider "aws" {
   region = "eu-north-1"
 }
