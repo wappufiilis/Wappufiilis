@@ -20,4 +20,14 @@ Please tell me your fuksi year\.
 ENTER_FIILIS = """You are from {} year\.
 
 You can now start tracking your wappufiilis\.
+
+How would you rate your current wappufiilis on scale from 1 to 10\?
+"""
+
+FIILIS_DASHBOARD = """Account information\.
+Fuksi of {} from {}\.
+
+Latest fiilis: {}\.
+
+Add new entry:
 """

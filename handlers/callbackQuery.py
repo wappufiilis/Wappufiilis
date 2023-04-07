@@ -6,7 +6,12 @@ from telegram import Update, constants
 from telegram.ext import CallbackContext, ContextTypes
 from telegram.helpers import escape_markdown
 
-from keyboards import ASSOCIATION_KEYBOARD, CAMPUS_KEYBOARD, YEAR_KEYBOARD
+from keyboards import (
+    ASSOCIATION_KEYBOARD,
+    CAMPUS_KEYBOARD,
+    SCORE_KEYBOARD,
+    YEAR_KEYBOARD,
+)
 from messages import *
 
 
@@ -23,17 +28,36 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
         )
     else:
         keyValuePairs = callbackData.split("::")
+        # create new callbackData string, drop all keys that start with "new" or "edit"
+        callbackData = "::".join(
+            [
+                pair
+                for pair in keyValuePairs
+                if not pair.startswith("new") and not pair.startswith("edit")
+            ]
+        )
         options = {}
         for pair in keyValuePairs:
             key, value = pair.split(":")
             options[key] = value
         print("meta: inline options", options)
-        if "year" in options:
+        if "newScore" in options:
+            # TODO @Tapiiri write new score to DB, get the previous scores and dsplay them.
+            # Take timestamps!
+            await query.edit_message_text(
+                text=FIILIS_DASHBOARD.format(
+                    options["year"],
+                    options["guild"],
+                    options["newScore"],
+                ),
+                reply_markup=SCORE_KEYBOARD(callbackData),
+                parse_mode=constants.ParseMode.MARKDOWN_V2,
+            )
+        elif "year" in options:
             year = options["year"]
-
             await query.edit_message_text(
                 text=ENTER_FIILIS.format(year),
-                reply_markup=None,
+                reply_markup=SCORE_KEYBOARD(callbackData),
                 parse_mode=constants.ParseMode.MARKDOWN_V2,
             )
         elif "guild" in options:

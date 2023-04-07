@@ -161,3 +161,27 @@ def YEAR_KEYBOARD(callBackData: str):
     )
 
     return InlineKeyboardMarkup(yearButtons)
+
+
+def SCORE_KEYBOARD(callBackData: str):
+    scoreButtons = list(
+        chunks(
+            [
+                InlineKeyboardButton(
+                    score,
+                    callback_data=f"{callBackData}::newScore:{score}",
+                )
+                for score in range(0, 11)
+            ],
+            3,
+        )
+    )
+    # remove the last pair from callbackData
+    goBackData = "::".join(callBackData.split("::")[:-1])
+    scoreButtons.append(
+        [
+            InlineKeyboardButton("Back", callback_data=goBackData),
+        ]
+    )
+
+    return InlineKeyboardMarkup(scoreButtons)
