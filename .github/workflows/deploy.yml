@@ -17,11 +17,11 @@ jobs:
       - uses: actions/checkout@v2
       - name: Build deployment package
         run: |
-        zip lambda_function_payload.zip bot.py \
-        && mkdir package \
-        && pip install --target ./package -r requirements.txt \
-        && cd package && zip ../lambda_function_payload.zip ./* && cd .. \
-        && mv lambda_function_payload.zip ./terraform/
+          zip lambda_function_payload.zip bot.py \
+          && mkdir package \
+          && pip install --target ./package -r requirements.txt \
+          && cd package && zip ../lambda_function_payload.zip ./* && cd .. \
+          && mv lambda_function_payload.zip ./terraform/
 
       - uses: hashicorp/setup-terraform@v2
 
