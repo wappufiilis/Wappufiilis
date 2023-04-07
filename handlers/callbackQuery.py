@@ -6,7 +6,7 @@ from telegram import Update, constants
 from telegram.ext import CallbackContext, ContextTypes
 from telegram.helpers import escape_markdown
 
-from keyboards import ASSOCIATION_KEYBOARD, CAMPUS_KEYBOARD
+from keyboards import ASSOCIATION_KEYBOARD, CAMPUS_KEYBOARD, YEAR_KEYBOARD
 from messages import *
 
 
@@ -23,10 +23,17 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
             reply_markup=CAMPUS_KEYBOARD,
             parse_mode=constants.ParseMode.MARKDOWN_V2,
         )
-    if selected == "campusSelected":
+    elif selected == "campusSelected":
         campus = options[1]
         await query.edit_message_text(
             text=CAMPUS_SELECTED.format(campus),
             reply_markup=ASSOCIATION_KEYBOARD(campus),
+            parse_mode=constants.ParseMode.MARKDOWN_V2,
+        )
+    elif selected == "associationSelected":
+        association = options[1]
+        await query.edit_message_text(
+            text=ASSOCIATION_SELECTED.format(association),
+            reply_markup=YEAR_KEYBOARD(),
             parse_mode=constants.ParseMode.MARKDOWN_V2,
         )

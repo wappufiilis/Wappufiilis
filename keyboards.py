@@ -81,7 +81,6 @@ Killat = {
         "TiTe",
         "Urbanum",
         "YKI",
-        "Porin teekkarit (PoTka)",
     ],
     "Turku": [
         "Adamas",
@@ -100,7 +99,6 @@ Killat = {
 
 
 def ASSOCIATION_KEYBOARD(university: str):
-
     guildButtons = list(
         chunks(
             [
@@ -120,3 +118,44 @@ def ASSOCIATION_KEYBOARD(university: str):
         ]
     )
     return InlineKeyboardMarkup(guildButtons)
+
+
+Vuodet = [
+    "aNcient",
+    "2010",
+    "2011",
+    "2012",
+    "2013",
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+]
+
+
+def YEAR_KEYBOARD():
+    yearButtons = list(
+        chunks(
+            [
+                InlineKeyboardButton(
+                    year,
+                    callback_data=f"yearSelected:{year}",
+                )
+                for year in Vuodet
+            ],
+            3,
+        )
+    )
+    yearButtons.append(
+        [
+            InlineKeyboardButton("Back", callback_data="campusSelect:back"),
+        ]
+    )
+
+    return InlineKeyboardMarkup(yearButtons)
