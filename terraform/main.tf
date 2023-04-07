@@ -7,7 +7,14 @@ terraform {
     kms_key_id     = "dca8ba1b-a9cb-4f06-be83-4ce544268760"
     dynamodb_table = "tf-remote-state-lock"
   }
+  required_providers {
+    httpclient = {
+      version = "1.0.0"
+      source  = "dmachard/http-client"
+    }
+  }
 }
+
 
 provider "aws" {
   region = "eu-north-1"
@@ -36,7 +43,7 @@ EOF
 resource "aws_lambda_function" "lambda" {
   filename      = "lambda_function_payload.zip"
   function_name = "wappufiilis_bot_lambda"
-  role          = "${aws_iam_role.iam_for_lambda.arn}"
+  role          = aws_iam_role.iam_for_lambda.arn
   handler       = "bot.lambda_handler"
 
   runtime = "python3.9"
@@ -44,13 +51,13 @@ resource "aws_lambda_function" "lambda" {
   # The filebase64sha256() function is available in Terraform 0.11.12 and later
   # For Terraform 0.11.11 and earlier, use the base64sha256() function and the file() function:
   # source_code_hash = "${base64sha256(file("lambda_function_payload.zip"))}"
-  source_code_hash = "${filebase64sha256("lambda_function_payload.zip")}"
+  source_code_hash = filebase64sha256("lambda_function_payload.zip")
 
   environment {
     variables = {
-      TOKEN = var.telegram_token
-      TIMEZONE = "Europe/Helsinki"
-      DATABASE_URL="postgres://a@b:c/d"
+      TOKEN        = var.telegram_token
+      TIMEZONE     = "Europe/Helsinki"
+      DATABASE_URL = "postgres://a@b:c/d"
     }
   }
   depends_on = [aws_iam_role_policy_attachment.lambda_logs, aws_cloudwatch_log_group.example]
@@ -88,8 +95,8 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_logs" {
-  role       = "${aws_iam_role.iam_for_lambda.name}"
-  policy_arn = "${aws_iam_policy.lambda_logging.arn}"
+  role       = aws_iam_role.iam_for_lambda.name
+  policy_arn = aws_iam_policy.lambda_logging.arn
 }
 
 resource "random_id" "random_path" {
