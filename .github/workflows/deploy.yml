@@ -15,11 +15,13 @@ jobs:
         working-directory: .
     steps:
       - uses: actions/checkout@v2
-      - run: zip lambda_function_payload.zip bot.py
-      - run: mkdir package
-      - run: pip install --target ./package -r requirements.txt
-      - run: cd package && zip ../lambda_function_payload.zip ./* && cd ..
-      - run: cd terraform
+      - name: Build deployment package
+        run: |
+        zip lambda_function_payload.zip bot.py \
+        && mkdir package \
+        && pip install --target ./package -r requirements.txt \
+        && cd package && zip ../lambda_function_payload.zip ./* && cd .. \
+        && mv lambda_function_payload.zip ./terraform/
 
       - uses: hashicorp/setup-terraform@v2
 
@@ -27,9 +29,11 @@ jobs:
         id: fmt
         run: terraform fmt -check
         continue-on-error: true
+        working-directory: terraform
 
       - name: Terraform Init
         id: init
+        working-directory: terraform
         run: terraform init
         env:
           TF_CLI_ARGS_init: -backend-config="key=production/terraform.tfstate"
@@ -38,10 +42,12 @@ jobs:
 
       - name: Terraform Validate
         id: validate
+        working-directory: terraform
         run: terraform validate -no-color
 
       - name: Terraform Apply
         id: apply
+        working-directory: terraform
         run: terraform apply -auto-approve -lock-timeout=5m
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
