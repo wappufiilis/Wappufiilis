@@ -9,7 +9,7 @@ terraform {
   }
   required_providers {
     httpclient = {
-      version = "1.0.0"
+      version = "0.0.3"
       source  = "dmachard/http-client"
     }
   }
