@@ -20,7 +20,7 @@ jobs:
           zip lambda_function_payload.zip bot.py \
           && mkdir package \
           && pip install --target ./package -r requirements.txt \
-          && cd package && zip ../lambda_function_payload.zip ./* && cd .. \
+          && cd package && zip ../lambda_function_payload.zip -r ./* && cd .. \
           && mv lambda_function_payload.zip ./terraform/
 
       - uses: hashicorp/setup-terraform@v2
