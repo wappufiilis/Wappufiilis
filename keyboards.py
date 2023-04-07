@@ -14,16 +14,16 @@ OK_KEYBOARD = InlineKeyboardMarkup(
 CAMPUS_KEYBOARD = InlineKeyboardMarkup(
     [
         [
-            InlineKeyboardButton("Otaniemi", callback_data="campusSelected:Aalto"),
-            InlineKeyboardButton("Tampere", callback_data="campusSelected:Tampere"),
+            InlineKeyboardButton("Otaniemi", callback_data="campus:Aalto"),
+            InlineKeyboardButton("Tampere", callback_data="campus:Tampere"),
         ],
         [
-            InlineKeyboardButton("Turku", callback_data="campusSelected:Turku"),
-            InlineKeyboardButton("lappeen Ranta", callback_data="campusSelected:LUT"),
+            InlineKeyboardButton("Turku", callback_data="campus:Turku"),
+            InlineKeyboardButton("lappeen Ranta", callback_data="campus:LUT"),
         ],
         [
-            InlineKeyboardButton("Jyväskylä", callback_data="campusSelected:Jyväskylä"),
-            InlineKeyboardButton("Oulu", callback_data="campusSelected:Oulu"),
+            InlineKeyboardButton("Jyväskylä", callback_data="campus:Jyväskylä"),
+            InlineKeyboardButton("Oulu", callback_data="campus:Oulu"),
         ],
     ]
 )
@@ -98,15 +98,15 @@ Killat = {
 }
 
 
-def ASSOCIATION_KEYBOARD(university: str):
+def ASSOCIATION_KEYBOARD(campus: str):
     guildButtons = list(
         chunks(
             [
                 InlineKeyboardButton(
-                    association,
-                    callback_data=f"associationSelected:{association}",
+                    guild,
+                    callback_data=f"campus:{campus}::guild:{guild}",
                 )
-                for association in Killat[university]
+                for guild in Killat[campus]
             ],
             3,
         )
@@ -114,7 +114,7 @@ def ASSOCIATION_KEYBOARD(university: str):
 
     guildButtons.append(
         [
-            InlineKeyboardButton("Back", callback_data="campusSelect:back"),
+            InlineKeyboardButton("Back", callback_data="start"),
         ]
     )
     return InlineKeyboardMarkup(guildButtons)
@@ -139,22 +139,24 @@ Vuodet = [
 ]
 
 
-def YEAR_KEYBOARD():
+def YEAR_KEYBOARD(callBackData: str):
     yearButtons = list(
         chunks(
             [
                 InlineKeyboardButton(
                     year,
-                    callback_data=f"yearSelected:{year}",
+                    callback_data=f"{callBackData}::year:{year}",
                 )
                 for year in Vuodet
             ],
             3,
         )
     )
+    # remove the last pair from callbackData
+    goBackData = "::".join(callBackData.split("::")[:-1])
     yearButtons.append(
         [
-            InlineKeyboardButton("Back", callback_data="campusSelect:back"),
+            InlineKeyboardButton("Back", callback_data=goBackData),
         ]
     )
 
