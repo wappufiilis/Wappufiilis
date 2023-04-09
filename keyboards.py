@@ -128,7 +128,6 @@ def YEAR_KEYBOARD(callBackData: dict):
                                 KeyboardKeys.CAMPUS.value
                             ],
                             KeyboardKeys.YEAR.value: year,
-                            KeyboardKeys.MENU.value: MenuKeys.GUILD.value,
                         }
                     ),
                 )
