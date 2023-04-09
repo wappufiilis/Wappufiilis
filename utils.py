@@ -32,18 +32,10 @@ def compressCallBackData(data: dict):
         else:
             csv += ","
     csv = csv[:-1]
-
     csv_str = csv.encode("utf-8")
     compressed = gzip.compress(csv_str)
     encoded = base64.b64encode(compressed).decode("utf-8")
-    print(
-        data,
-        "encoded is",
-        encoded,
-        len(encoded),
-        "decoded is",
-        decompressCallBackData(encoded),
-    )
+    # print(data, "encoded is", encoded, len(encoded), "decoded is", decompressCallBackData(encoded))
     return encoded
 
 
@@ -57,10 +49,6 @@ def decompressCallBackData(data: str):
         if item:
             data[str(i)] = item
     return data
-    # decoded = base64.b64decode(data.encode("utf-8"))
-    # decompressed = gzip.decompress(decoded)
-    # json_str = decompressed.decode("utf-8")
-    # return json.loads(json_str)
 
 
 class KeyboardKeys(Enum):
