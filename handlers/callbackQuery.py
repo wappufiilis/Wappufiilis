@@ -23,7 +23,7 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     timestamp = callbackData.get(KeyboardKeys.TIMESTAMP.value)
     newScore = callbackData.get(KeyboardKeys.NEW_SCORE.value)
     menu = callbackData.get(KeyboardKeys.MENU.value)
-    if newScore:
+    if newScore or not menu:
         # Update the score
         putItem(
             year=year,
@@ -65,7 +65,7 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
         )
     elif menu == MenuKeys.GUILD.value:
         await query.edit_message_text(
-            text=SELECT_GUILD,
+            text=SELECT_GUILD.format(campus),
             reply_markup=ASSOCIATION_KEYBOARD(
                 {
                     KeyboardKeys.GUILD.value: guild,
