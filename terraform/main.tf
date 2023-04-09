@@ -79,7 +79,7 @@ resource "aws_iam_policy" "lambda_dynamodb" {
   "Statement": [
     {
       "Action": [
-        "dynamoDB:PutItem"
+        "dynamodb:PutItem"
       ],
       "Resource": "*",
       "Effect": "Allow"
@@ -91,7 +91,7 @@ EOF
 
 resource "aws_iam_role_policy_attachment" "lambda_dynamodb" {
   role       = aws_iam_role.iam_for_lambda.name
-  policy_arn = aws_iam_policy.lambda_logging.arn
+  policy_arn = aws_iam_policy.lambda_dynamodb.arn
 }
 
 # This is to optionally manage the CloudWatch Log Group for the Lambda Function.
