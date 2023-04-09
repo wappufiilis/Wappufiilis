@@ -1,11 +1,8 @@
-import os
-import random
-from datetime import datetime
-
 from telegram import Update, constants
 from telegram.ext import CallbackContext, ContextTypes
 from telegram.helpers import escape_markdown
 
+from database.database import putItem
 from keyboards import (
     ASSOCIATION_KEYBOARD,
     CAMPUS_KEYBOARD,
@@ -42,8 +39,7 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
             options[key] = value
         print("meta: inline options", options)
         if "newScore" in options:
-            # TODO @Tapiiri write new score to DB, get the previous scores and dsplay them.
-            # Take timestamps!
+            putItem(options["year"], options["guild"], options["newScore"])
             await query.edit_message_text(
                 text=FIILIS_DASHBOARD.format(
                     options["year"],
