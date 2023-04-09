@@ -1,9 +1,31 @@
 # This file is maintained automatically by "terraform init".
 # Manual edits may be lost in future updates.
 
+provider "registry.terraform.io/dmachard/http-client" {
+  version     = "0.0.3"
+  constraints = "0.0.3"
+  hashes = [
+    "h1:bHnCxiSnOSHZZ06Tf4Qm4I/EBOctELgSb2vmIVQW/iA=",
+    "zh:05afc5c00277c27584f221c25e4babac567e527b6a9177c366c1d5559ae8a822",
+    "zh:1b57f7b636e30c73692668d63f3606aa4214a2b70acc18c66cce0459d87efbca",
+    "zh:3675a89cd2ba135dcfa2ebc7fe4bee77f2ee562a15d47a43010db58b3b80484c",
+    "zh:5953a956c8001c571d88e4188d632f0694a57eee371d9eee1b81bb96416b8ea2",
+    "zh:59d174bbefc7b3e6469ee13d12a3015cffcf70fcafa0b13d8aead28eb9bb9029",
+    "zh:678ace2eb072efcf8a7d9db41b4e8d7eee4ef19ac1facaae87705e98dd64a3cb",
+    "zh:a120c9e4469211f3f61b465f764660fdab9264866735b0c44d83a54da8341063",
+    "zh:a6d75a5e4589047c0e13455f198120e8d6e6321263de944f266ba6151a576afc",
+    "zh:c6804bf18dee9f07a86f33c1495212b8511ca048bf96e598d9bc2856fb4e8461",
+    "zh:d7980e0d9d7650a2aec8a7aaa9bb73849663df8fd066f3ac5dada438c9fdbac3",
+    "zh:f26f5a98edb43d5e033cf764dc3a1e1cf59fb64bbd53451252eb2c60e6ec21e8",
+    "zh:f2dae3d1ce20a3016e8673a434ca99cbf7ed687ec39d5c1befc4ce2d4e6831da",
+    "zh:f607dc25692f240f6c06e7c2fadde1f3a9c43fef4b02e0c7514abcb16a902c6d",
+  ]
+}
+
 provider "registry.terraform.io/hashicorp/aws" {
   version = "4.62.0"
   hashes = [
+    "h1:H/nY2teFoN9LU+Xtc1dx7TGS6w2HrARs0Q7cFb6vbus=",
     "h1:W9SNPJwklBwrSNCdY8MHET9yFJlM5vVSxb7szD5pzFk=",
     "zh:12059dc2b639797b9facb6397ac6aec563891634be8e5aadf3a457590c1147d4",
     "zh:1b3515d70b6998359d0a6d3b3c287940ab2e5c59cd02f95c7d9dab7df76e86b6",
@@ -26,6 +48,7 @@ provider "registry.terraform.io/hashicorp/aws" {
 provider "registry.terraform.io/hashicorp/random" {
   version = "3.4.3"
   hashes = [
+    "h1:saZR+mhthL0OZl4SyHXZraxyaBNVMxiZzks78nWcZ2o=",
     "h1:xZGZf18JjMS06pFa4NErzANI98qi59SEcBsOcS2P2yQ=",
     "zh:41c53ba47085d8261590990f8633c8906696fa0a3c4b384ff6a7ecbf84339752",
     "zh:59d98081c4475f2ad77d881c4412c5129c56214892f490adf11c7e7a5a47de9b",

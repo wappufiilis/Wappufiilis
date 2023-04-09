@@ -5,7 +5,7 @@ from datetime import datetime
 import boto3
 from botocore.credentials import Credentials
 
-from utils import KeyboardKeys
+from utils import DatabaseKeys
 
 creds = Credentials(
     access_key=os.getenv("AWS_ACCESS_KEY_ID"),
@@ -25,22 +25,36 @@ def saveUserInfo(
     campus: str = None,
     guild: str = None,
     year: str = None,
-    lastWappuFiilis: int = None,
+    newScore: str = None,
 ):
     """
     Save user info, if user already exists, update the info
     """
     table = dynamodb.Table(os.getenv("DYNAMODB_USERS_TABLE_NAME"))
-    table.put_item(
-        Item={
-            "partition_key": f"user::{user_id}",
-            "user_id": user_id,
-            "campus": campus,
-            "guild": guild,
-            "year": year,
-            "wappu_fiilises": lastWappuFiilis,
-        }
-    )
+    user = {}
+    if newScore:
+        user = getUserInfo(user_id)
+        table.update_item(
+            Key={"user_id": str(user_id)},
+            UpdateExpression="set last_score=:s, scores=:sc",
+            ExpressionAttributeValues={
+                ":s": newScore,
+                ":sc": user.get(DatabaseKeys.SCORES.value, []) + [newScore],
+            },
+            ReturnValues="NONE",
+        )
+    else:
+        table.update_item(
+            Key={"user_id": str(user_id)},
+            UpdateExpression="set campus=:c, guild=:g, study_year=:y",
+            ExpressionAttributeValues={
+                ":c": campus,
+                ":g": guild,
+                ":y": year,
+            },
+            ReturnValues="NONE",
+        )
+    return user
 
 
 def getUserInfo(user_id: str) -> dict:
@@ -48,21 +62,13 @@ def getUserInfo(user_id: str) -> dict:
     Get user info
     If no user exists, return None
     """
-    print("aws", os.getenv("AWS_ACCESS_KEY_ID"), os.getenv("AWS_SECRET_ACCESS_KEY"))
     table = dynamodb.Table(os.getenv("DYNAMODB_USERS_TABLE_NAME"))
     try:
-        response = table.get_item(Key={"partition_key": f"user::{user_id}"})
+        response = table.get_item(Key={"user_id": str(user_id)})
     except Exception as e:
         print(";D", e)
-        return {
-            KeyboardKeys.CAMPUS.value: None,
-            KeyboardKeys.GUILD.value: None,
-            KeyboardKeys.YEAR.value: None,
-            "lastWappuFiilis": None,
-            "lastWappuFiilisTimestamp": None,
-        }
+        return None
     if "Item" in response:
-        # NOTE! To keyboardkeys!
         return response["Item"]
     else:
         return None

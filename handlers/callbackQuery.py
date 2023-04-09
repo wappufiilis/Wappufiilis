@@ -2,13 +2,8 @@ from telegram import Update, constants
 from telegram.ext import ContextTypes
 from telegram.helpers import escape_markdown
 
-from database.database import putItem
-from keyboards import (
-    ASSOCIATION_KEYBOARD,
-    CAMPUS_KEYBOARD,
-    SCORE_KEYBOARD,
-    YEAR_KEYBOARD,
-)
+from database.database import putItem, saveUserInfo
+from keyboards import ASSOCIATION_KEYBOARD, CAMPUS_KEYBOARD, SCORE_KEYBOARD
 from messages import *
 from utils import Kampus, KeyboardKeys, MenuKeys, decompressCallBackData
 
@@ -26,20 +21,35 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     timestamp = callbackData.get(KeyboardKeys.TIMESTAMP.value)
     newScore = callbackData.get(KeyboardKeys.NEW_SCORE.value)
     menu = callbackData.get(KeyboardKeys.MENU.value)
-    if newScore or not menu:
-        # Update the score
+    if newScore:
         putItem(
             year=year,
             guild=guild,
             campus=campus,
             score=newScore,
         )
+        saveUserInfo(
+            user_id=query.from_user.id,
+            campus=campus,
+            guild=guild,
+            year=year,
+            newScore=newScore,
+        )
+    elif not menu:
+        saveUserInfo(
+            user_id=query.from_user.id,
+            campus=campus,
+            guild=guild,
+            year=year,
+        )
+    if not menu:
+        # Update the score
         await query.edit_message_text(
             text=BASE_MESSAGE.format(
                 escape_markdown(query.from_user.first_name),
                 guild,
                 year,
-                newScore,
+                score,
             ),
             reply_markup=SCORE_KEYBOARD(
                 {
@@ -60,7 +70,7 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
                     KeyboardKeys.GUILD.value: guild,
                     KeyboardKeys.CAMPUS.value: campus,
                     KeyboardKeys.YEAR.value: year,
-                    "score": newScore,
+                    KeyboardKeys.SCORE.value: newScore,
                     KeyboardKeys.TIMESTAMP.value: timestamp,
                 }
             ),
@@ -76,7 +86,7 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
                     KeyboardKeys.GUILD.value: guild,
                     KeyboardKeys.CAMPUS.value: campus,
                     KeyboardKeys.YEAR.value: year,
-                    "score": newScore,
+                    KeyboardKeys.SCORE.value: newScore,
                     KeyboardKeys.TIMESTAMP.value: timestamp,
                 }
             ),
@@ -90,7 +100,7 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
                     KeyboardKeys.GUILD.value: guild,
                     KeyboardKeys.CAMPUS.value: campus,
                     KeyboardKeys.YEAR.value: year,
-                    "score": newScore,
+                    KeyboardKeys.SCORE.value: newScore,
                     KeyboardKeys.TIMESTAMP.value: timestamp,
                 }
             ),

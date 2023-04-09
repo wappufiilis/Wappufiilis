@@ -51,6 +51,16 @@ def decompressCallBackData(data: str):
     return data
 
 
+class DatabaseKeys(Enum):
+    USER_ID = "user_id"
+    GUILD = "guild"
+    CAMPUS = "campus"
+    YEAR = "study_year"
+    TIMESTAMP = "timestamp"
+    LAST_SCORE = "last_score"
+    SCORES = "scores"
+
+
 class KeyboardKeys(Enum):
     USER_ID = "1"
     GUILD = "2"
