@@ -18,17 +18,49 @@ def userToCallbackData(user: dict):
     return json.dumps(user)
 
 
-def encodeDarkMagic(data: dict):
-    encoding = hashlib.sha256(json.dumps(data).encode("utf-8")).hexdigest()
-    print("data", json.dumps(data), "encoded as", encoding)
-    print("it decodes to", decodeDarkMagic(encoding))
-    # hashlib.sha256(my_string.encode('utf-8')).hexdigest()
-    return hashlib.sha256(json.dumps(data).encode("utf-8")).hexdigest()
+import base64
+import gzip
+import json
 
 
-def decodeDarkMagic(data: str):
-    print("decoding", data)
-    return json.loads(base64.b64decode(data).decode("utf-8"))
+def compressCallBackData(data: dict):
+    # data to csv string
+    csv = ""
+    for i in range(1 + max(int(number.value) for number in KeyboardKeys)):
+        if str(i) in data:
+            csv += str(data[str(i)]) + ","
+        else:
+            csv += ","
+    csv = csv[:-1]
+
+    csv_str = csv.encode("utf-8")
+    compressed = gzip.compress(csv_str)
+    encoded = base64.b64encode(compressed).decode("utf-8")
+    print(
+        data,
+        "encoded is",
+        encoded,
+        len(encoded),
+        "decoded is",
+        decompressCallBackData(encoded),
+    )
+    return encoded
+
+
+def decompressCallBackData(data: str):
+    decoded = base64.b64decode(data.encode("utf-8"))
+    decompressed = gzip.decompress(decoded)
+    csv = decompressed.decode("utf-8")
+    items = csv.split(",")
+    data = {}
+    for i, item in enumerate(items):
+        if item:
+            data[str(i)] = item
+    return data
+    # decoded = base64.b64decode(data.encode("utf-8"))
+    # decompressed = gzip.decompress(decoded)
+    # json_str = decompressed.decode("utf-8")
+    # return json.loads(json_str)
 
 
 class KeyboardKeys(Enum):
@@ -40,6 +72,12 @@ class KeyboardKeys(Enum):
     TIMESTAMP = "6"
     NEW_SCORE = "7"
     MENU = "8"
+
+
+class MenuKeys(Enum):
+    CAMPUS = "1"
+    GUILD = "2"
+    YEAR = "3"
 
 
 Vuodet = [

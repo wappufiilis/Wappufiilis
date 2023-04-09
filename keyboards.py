@@ -3,7 +3,15 @@ import json
 
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
-from utils import Kampus, KeyboardKeys, Killat, Vuodet, chunks, encodeDarkMagic
+from utils import (
+    Kampus,
+    KeyboardKeys,
+    Killat,
+    MenuKeys,
+    Vuodet,
+    chunks,
+    compressCallBackData,
+)
 
 OK_KEYBOARD = InlineKeyboardMarkup(
     [
@@ -18,20 +26,22 @@ def CAMPUS_KEYBOARD(callBackData: dict):
     keyboard = list(
         chunks(
             [
-                [
-                    InlineKeyboardButton(
-                        campus.name.lower().capitalize(),
-                        callback_data=encodeDarkMagic(
-                            {
-                                KeyboardKeys.GUILD.value: callBackData["guild"],
-                                KeyboardKeys.CAMPUS.value: campus.value,
-                                KeyboardKeys.YEAR.value: callBackData["year"],
-                                KeyboardKeys.MENU.value: "guild",
-                            }
-                        ),
-                    )
-                    for campus in Kampus
-                ]
+                InlineKeyboardButton(
+                    campus.name.lower().capitalize(),
+                    callback_data=compressCallBackData(
+                        {
+                            KeyboardKeys.GUILD.value: callBackData[
+                                KeyboardKeys.GUILD.value
+                            ],
+                            KeyboardKeys.CAMPUS.value: campus.value,
+                            KeyboardKeys.YEAR.value: callBackData[
+                                KeyboardKeys.YEAR.value
+                            ],
+                            KeyboardKeys.MENU.value: MenuKeys.GUILD.value,
+                        }
+                    ),
+                )
+                for campus in Kampus
             ],
             3,
         )
@@ -42,7 +52,18 @@ def CAMPUS_KEYBOARD(callBackData: dict):
         [
             InlineKeyboardButton(
                 "Back",
-                callback_data=encodeDarkMagic(callBackData),
+                callback_data=compressCallBackData(
+                    {
+                        KeyboardKeys.GUILD.value: callBackData[
+                            KeyboardKeys.GUILD.value
+                        ],
+                        KeyboardKeys.CAMPUS.value: callBackData[
+                            KeyboardKeys.CAMPUS.value
+                        ],
+                        KeyboardKeys.YEAR.value: callBackData[KeyboardKeys.YEAR.value],
+                        KeyboardKeys.MENU.value: MenuKeys.GUILD.value,
+                    }
+                ),
             ),
         ]
     )
@@ -55,7 +76,7 @@ def ASSOCIATION_KEYBOARD(callBackData: dict):
             [
                 InlineKeyboardButton(
                     guild,
-                    callback_data=encodeDarkMagic(
+                    callback_data=compressCallBackData(
                         {
                             KeyboardKeys.GUILD.value: guild,
                             KeyboardKeys.CAMPUS.value: callBackData[
@@ -108,11 +129,17 @@ def SCORE_KEYBOARD(callBackData: dict):
             [
                 InlineKeyboardButton(
                     score,
-                    callback_data=encodeDarkMagic(
+                    callback_data=compressCallBackData(
                         {
-                            KeyboardKeys.GUILD.value: callBackData["guild"],
-                            KeyboardKeys.CAMPUS.value: callBackData["campus"],
-                            KeyboardKeys.YEAR.value: callBackData["year"],
+                            KeyboardKeys.GUILD.value: callBackData[
+                                KeyboardKeys.GUILD.value
+                            ],
+                            KeyboardKeys.CAMPUS.value: callBackData[
+                                KeyboardKeys.CAMPUS.value
+                            ],
+                            KeyboardKeys.YEAR.value: callBackData[
+                                KeyboardKeys.YEAR.value
+                            ],
                             KeyboardKeys.NEW_SCORE.value: score,
                         }
                     ),
@@ -127,12 +154,16 @@ def SCORE_KEYBOARD(callBackData: dict):
         [
             InlineKeyboardButton(
                 "Select guild",
-                callback_data=encodeDarkMagic(
+                callback_data=compressCallBackData(
                     {
-                        KeyboardKeys.GUILD.value: callBackData["guild"],
-                        KeyboardKeys.CAMPUS.value: callBackData["campus"],
-                        KeyboardKeys.YEAR.value: callBackData["year"],
-                        KeyboardKeys.MENU.value: "campus",
+                        KeyboardKeys.GUILD.value: callBackData[
+                            KeyboardKeys.GUILD.value
+                        ],
+                        KeyboardKeys.CAMPUS.value: callBackData[
+                            KeyboardKeys.CAMPUS.value
+                        ],
+                        KeyboardKeys.YEAR.value: callBackData[KeyboardKeys.YEAR.value],
+                        KeyboardKeys.MENU.value: MenuKeys.CAMPUS.value,
                     }
                 ),
             )
@@ -142,12 +173,16 @@ def SCORE_KEYBOARD(callBackData: dict):
         [
             InlineKeyboardButton(
                 "Select fuksi year",
-                callback_data=encodeDarkMagic(
+                callback_data=compressCallBackData(
                     {
-                        KeyboardKeys.GUILD.value: callBackData["guild"],
-                        KeyboardKeys.CAMPUS.value: callBackData["campus"],
-                        KeyboardKeys.YEAR.value: callBackData["year"],
-                        KeyboardKeys.MENU.value: "year",
+                        KeyboardKeys.GUILD.value: callBackData[
+                            KeyboardKeys.GUILD.value
+                        ],
+                        KeyboardKeys.CAMPUS.value: callBackData[
+                            KeyboardKeys.CAMPUS.value
+                        ],
+                        KeyboardKeys.YEAR.value: callBackData[KeyboardKeys.YEAR.value],
+                        KeyboardKeys.MENU.value: MenuKeys.YEAR.value,
                     }
                 ),
             ),

@@ -5,7 +5,7 @@ from database.database import getUserInfo
 from handlers.callbackQuery import meta_inline_menu
 from keyboards import SCORE_KEYBOARD
 from messages import BASE_MESSAGE
-from utils import userToCallbackData
+from utils import KeyboardKeys
 
 
 async def home(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
@@ -14,8 +14,8 @@ async def home(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     await update.message.reply_text(
         text=BASE_MESSAGE.format(
             update.message.from_user.first_name,
-            user["guild"],
-            user["year"],
+            user[KeyboardKeys.GUILD.value],
+            user[KeyboardKeys.YEAR.value],
             user["lastWappuFiilis"],
         ),
         reply_markup=SCORE_KEYBOARD(user),

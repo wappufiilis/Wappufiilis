@@ -7,14 +7,14 @@ from telegram.helpers import escape_markdown
 from database.database import putItem
 from keyboards import ASSOCIATION_KEYBOARD, CAMPUS_KEYBOARD, SCORE_KEYBOARD
 from messages import *
-from utils import KeyboardKeys, chunks, decodeDarkMagic
+from utils import KeyboardKeys, MenuKeys, chunks, decompressCallBackData
 
 
 async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Parses the CallbackQuery and updates the message text."""
     query = update.callback_query
     await query.answer()
-    callbackData = decodeDarkMagic(query.data)
+    callbackData = decompressCallBackData(query.data)
     print("callback data is", callbackData)
     guild = callbackData.get(KeyboardKeys.GUILD.value)
     campus = callbackData.get(KeyboardKeys.CAMPUS.value)
@@ -40,37 +40,37 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
             ),
             reply_markup=SCORE_KEYBOARD(
                 {
-                    "guild": guild,
-                    "campus": campus,
-                    "year": year,
+                    KeyboardKeys.GUILD.value: guild,
+                    KeyboardKeys.CAMPUS.value: campus,
+                    KeyboardKeys.YEAR.value: year,
                     "score": newScore,
                     "timestamp": timestamp,
                 }
             ),
             parse_mode=constants.ParseMode.MARKDOWN_V2,
         )
-    elif menu == "campus":
+    elif menu == MenuKeys.CAMPUS.value:
         await query.edit_message_text(
             text=CAMPUS_SELECT,
             reply_markup=CAMPUS_KEYBOARD(
                 {
-                    "guild": guild,
-                    "campus": campus,
-                    "year": year,
+                    KeyboardKeys.GUILD.value: guild,
+                    KeyboardKeys.CAMPUS.value: campus,
+                    KeyboardKeys.YEAR.value: year,
                     "score": newScore,
                     "timestamp": timestamp,
                 }
             ),
             parse_mode=constants.ParseMode.MARKDOWN_V2,
         )
-    elif menu == "guild":
+    elif menu == MenuKeys.GUILD.value:
         await query.edit_message_text(
             text=SELECT_GUILD,
             reply_markup=ASSOCIATION_KEYBOARD(
                 {
-                    "guild": guild,
-                    "campus": campus,
-                    "year": year,
+                    KeyboardKeys.GUILD.value: guild,
+                    KeyboardKeys.CAMPUS.value: campus,
+                    KeyboardKeys.YEAR.value: year,
                     "score": newScore,
                     "timestamp": timestamp,
                 }

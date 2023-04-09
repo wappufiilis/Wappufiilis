@@ -5,6 +5,8 @@ from datetime import datetime
 import boto3
 from botocore.credentials import Credentials
 
+from utils import KeyboardKeys
+
 creds = Credentials(
     access_key=os.getenv("AWS_ACCESS_KEY_ID"),
     secret_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
@@ -53,13 +55,14 @@ def getUserInfo(user_id: str) -> dict:
     except Exception as e:
         print(";D", e)
         return {
-            "campus": None,
-            "guild": None,
-            "year": None,
+            KeyboardKeys.CAMPUS.value: None,
+            KeyboardKeys.GUILD.value: None,
+            KeyboardKeys.YEAR.value: None,
             "lastWappuFiilis": None,
             "lastWappuFiilisTimestamp": None,
         }
     if "Item" in response:
+        # NOTE! To keyboardkeys!
         return response["Item"]
     else:
         return None
