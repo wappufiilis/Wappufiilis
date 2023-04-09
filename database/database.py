@@ -3,11 +3,30 @@ import random
 from datetime import datetime
 
 import boto3
+from botocore.credentials import Credentials
 
-dynamodb = boto3.resource("dynamodb", region_name="eu-north-1")
+from utils import KeyboardKeys
+
+creds = Credentials(
+    access_key=os.getenv("AWS_ACCESS_KEY_ID"),
+    secret_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
+)
+client = boto3.client(
+    "dynamodb",
+    region_name=os.getenv("AWS_DEFAULT_REGION"),
+    aws_access_key_id=creds.access_key,
+    aws_secret_access_key=creds.secret_key,
+)
+dynamodb = boto3.resource("dynamodb", region_name=os.getenv("AWS_DEFAULT_REGION"))
 
 
-def saveUserInfo(user_id: str, campus: str = None, guild: str = None, year: str = None):
+def saveUserInfo(
+    user_id: str,
+    campus: str = None,
+    guild: str = None,
+    year: str = None,
+    lastWappuFiilis: int = None,
+):
     """
     Save user info, if user already exists, update the info
     """
@@ -19,24 +38,37 @@ def saveUserInfo(user_id: str, campus: str = None, guild: str = None, year: str 
             "campus": campus,
             "guild": guild,
             "year": year,
+            "wappu_fiilises": lastWappuFiilis,
         }
     )
 
 
-def getUserInfo(user_id: str):
+def getUserInfo(user_id: str) -> dict:
     """
     Get user info
     If no user exists, return None
     """
+    print("aws", os.getenv("AWS_ACCESS_KEY_ID"), os.getenv("AWS_SECRET_ACCESS_KEY"))
     table = dynamodb.Table(os.getenv("DYNAMODB_USERS_TABLE_NAME"))
-    response = table.get_item(Key={"partition_key": f"user::{user_id}"})
+    try:
+        response = table.get_item(Key={"partition_key": f"user::{user_id}"})
+    except Exception as e:
+        print(";D", e)
+        return {
+            KeyboardKeys.CAMPUS.value: None,
+            KeyboardKeys.GUILD.value: None,
+            KeyboardKeys.YEAR.value: None,
+            "lastWappuFiilis": None,
+            "lastWappuFiilisTimestamp": None,
+        }
     if "Item" in response:
+        # NOTE! To keyboardkeys!
         return response["Item"]
     else:
         return None
 
 
-def putItem(year, guild, score):
+def putItem(year, guild, campus, score):
     table = dynamodb.Table(os.getenv("DYNAMODB_EVENTS_TABLE_NAME"))
     timestamp = int(datetime.now().timestamp())
     rand = random.randint(0, 100000)
@@ -45,18 +77,19 @@ def putItem(year, guild, score):
             "partition_key": f"{year}::{guild}::{rand}",
             "year": year,
             "guild": guild,
+            "campus": campus,
             "score": score,
             "timestamp": timestamp,
         }
     )
 
 
-def getAverage(day: str, guild: str = None):
+def getAverage(day: str, guild: str = None) -> float:
     """
     Get averege fiilis for the day (based on the timestamp)
     If guild is specified, get the average for the guild
     """
-    table = dynamodb.Table(os.getenv("DYNAMODB_TABLE_NAME"))
+    table = dynamodb.Table(os.getenv("DYNAMODB_EVENTS_TABLE_NAME"))
     if guild:
         response = table.query(
             IndexName="guild-index",

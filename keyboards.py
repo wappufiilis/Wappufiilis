@@ -1,6 +1,17 @@
+import hashlib
+import json
+
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
-from utils import chunks
+from utils import (
+    Kampus,
+    KeyboardKeys,
+    Killat,
+    MenuKeys,
+    Vuodet,
+    chunks,
+    compressCallBackData,
+)
 
 OK_KEYBOARD = InlineKeyboardMarkup(
     [
@@ -11,102 +22,70 @@ OK_KEYBOARD = InlineKeyboardMarkup(
 )
 
 
-CAMPUS_KEYBOARD = InlineKeyboardMarkup(
-    [
-        [
-            InlineKeyboardButton("Otaniemi", callback_data="campus:Aalto"),
-            InlineKeyboardButton("Tampere", callback_data="campus:Tampere"),
-        ],
-        [
-            InlineKeyboardButton("Turku", callback_data="campus:Turku"),
-            InlineKeyboardButton("lappeen Ranta", callback_data="campus:LUT"),
-        ],
-        [
-            InlineKeyboardButton("Jyväskylä", callback_data="campus:Jyväskylä"),
-            InlineKeyboardButton("Oulu", callback_data="campus:Oulu"),
-        ],
-    ]
-)
+def CAMPUS_KEYBOARD(callBackData: dict):
+    keyboard = list(
+        chunks(
+            [
+                InlineKeyboardButton(
+                    campus.name.lower().capitalize(),
+                    callback_data=compressCallBackData(
+                        {
+                            KeyboardKeys.GUILD.value: callBackData[
+                                KeyboardKeys.GUILD.value
+                            ],
+                            KeyboardKeys.CAMPUS.value: campus.value,
+                            KeyboardKeys.YEAR.value: callBackData[
+                                KeyboardKeys.YEAR.value
+                            ],
+                            KeyboardKeys.MENU.value: MenuKeys.GUILD.value,
+                        }
+                    ),
+                )
+                for campus in Kampus
+            ],
+            3,
+        )
+    )
 
-Killat = {
-    "Aalto": [
-        "SIK",
-        "AK",
-        "AS",
-        "Athene",
-        "DG",
-        "FK",
-        "Inkubio",
-        "KIK",
-        "MK",
-        "Prodeko",
-        "PJK",
-        "IK",
-        "TiK",
-        "VK",
-        "KK",
-        "TF",
-    ],
-    "LUT": [
-        "Armatuuri",
-        "Cluster",
-        "Kaplaaki",
-        "KeTeK",
-        "KRK",
-        "Lateksii",
-        "Pelletti",
-        "Sätky",
-    ],
-    "Oulu": [
-        "OPTIEM",
-        "Arkkitehtikilta",
-        "Konekilta",
-        "Prosessikilta",
-        "OTiT",
-        "Ympäristörakentajakilta",
-        "SIK",
-    ],
-    "Tampere": [
-        "Arkkitehtikilta",
-        "Autek",
-        "Bioner",
-        "Indecs",
-        "INTO",
-        "KoRK",
-        "MIK",
-        "TARAKI",
-        "Skilta",
-        "Hiukkanen",
-        "Man@ger",
-        "TiTe",
-        "Urbanum",
-        "YKI",
-    ],
-    "Turku": [
-        "Adamas",
-        "Asklepio",
-        "Digit",
-        "Machina",
-        "Nucleus",
-        "Kemistklubben",
-        "DaTe",
-    ],
-    "Vaasa": ["Tutti ry"],
-    "Jyväskylä": [
-        "Algo",
-    ],
-}
+    # Add option to go back
+    keyboard.append(
+        [
+            InlineKeyboardButton(
+                "Back",
+                callback_data=compressCallBackData(
+                    {
+                        KeyboardKeys.GUILD.value: callBackData[
+                            KeyboardKeys.GUILD.value
+                        ],
+                        KeyboardKeys.CAMPUS.value: callBackData[
+                            KeyboardKeys.CAMPUS.value
+                        ],
+                        KeyboardKeys.YEAR.value: callBackData[KeyboardKeys.YEAR.value],
+                        KeyboardKeys.MENU.value: MenuKeys.GUILD.value,
+                    }
+                ),
+            ),
+        ]
+    )
+    return InlineKeyboardMarkup(keyboard)
 
 
-def ASSOCIATION_KEYBOARD(campus: str):
+def ASSOCIATION_KEYBOARD(callBackData: dict):
     guildButtons = list(
         chunks(
             [
                 InlineKeyboardButton(
                     guild,
-                    callback_data=f"campus:{campus}::guild:{guild}",
+                    callback_data=compressCallBackData(
+                        {
+                            KeyboardKeys.GUILD.value: guild,
+                            KeyboardKeys.CAMPUS.value: callBackData[
+                                KeyboardKeys.CAMPUS.value
+                            ],
+                        }
+                    ),
                 )
-                for guild in Killat[campus]
+                for guild in Killat[callBackData[KeyboardKeys.CAMPUS.value]]
             ],
             3,
         )
@@ -118,25 +97,6 @@ def ASSOCIATION_KEYBOARD(campus: str):
         ]
     )
     return InlineKeyboardMarkup(guildButtons)
-
-
-Vuodet = [
-    "aNcient",
-    "2010",
-    "2011",
-    "2012",
-    "2013",
-    "2014",
-    "2015",
-    "2016",
-    "2017",
-    "2018",
-    "2019",
-    "2020",
-    "2021",
-    "2022",
-    "2023",
-]
 
 
 def YEAR_KEYBOARD(callBackData: str):
@@ -163,25 +123,71 @@ def YEAR_KEYBOARD(callBackData: str):
     return InlineKeyboardMarkup(yearButtons)
 
 
-def SCORE_KEYBOARD(callBackData: str):
+def SCORE_KEYBOARD(callBackData: dict):
     scoreButtons = list(
         chunks(
             [
                 InlineKeyboardButton(
                     score,
-                    callback_data=f"{callBackData}::newScore:{score}",
+                    callback_data=compressCallBackData(
+                        {
+                            KeyboardKeys.GUILD.value: callBackData[
+                                KeyboardKeys.GUILD.value
+                            ],
+                            KeyboardKeys.CAMPUS.value: callBackData[
+                                KeyboardKeys.CAMPUS.value
+                            ],
+                            KeyboardKeys.YEAR.value: callBackData[
+                                KeyboardKeys.YEAR.value
+                            ],
+                            KeyboardKeys.NEW_SCORE.value: score,
+                        }
+                    ),
                 )
                 for score in range(0, 11)
             ],
             3,
         )
     )
-    # remove the last pair from callbackData
-    goBackData = "::".join(callBackData.split("::")[:-1])
+    # Add buttons to go to guild select (campus first) and year select
     scoreButtons.append(
         [
-            InlineKeyboardButton("Back", callback_data=goBackData),
-        ]
+            InlineKeyboardButton(
+                "Select guild",
+                callback_data=compressCallBackData(
+                    {
+                        KeyboardKeys.GUILD.value: callBackData[
+                            KeyboardKeys.GUILD.value
+                        ],
+                        KeyboardKeys.CAMPUS.value: callBackData[
+                            KeyboardKeys.CAMPUS.value
+                        ],
+                        KeyboardKeys.YEAR.value: callBackData[KeyboardKeys.YEAR.value],
+                        KeyboardKeys.MENU.value: MenuKeys.CAMPUS.value,
+                    }
+                ),
+            )
+        ],
+    )
+    scoreButtons.append(
+        [
+            InlineKeyboardButton(
+                "Select fuksi year",
+                callback_data=compressCallBackData(
+                    {
+                        KeyboardKeys.GUILD.value: callBackData[
+                            KeyboardKeys.GUILD.value
+                        ],
+                        KeyboardKeys.CAMPUS.value: callBackData[
+                            KeyboardKeys.CAMPUS.value
+                        ],
+                        KeyboardKeys.YEAR.value: callBackData[KeyboardKeys.YEAR.value],
+                        KeyboardKeys.MENU.value: MenuKeys.YEAR.value,
+                    }
+                ),
+            ),
+        ],
     )
 
+    # remove the last pair from callbackData
     return InlineKeyboardMarkup(scoreButtons)
