@@ -22,6 +22,7 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     newScore = callbackData.get(KeyboardKeys.NEW_SCORE.value)
     menu = callbackData.get(KeyboardKeys.MENU.value)
     if newScore:
+        score = newScore
         putItem(
             year=year,
             guild=guild,
@@ -43,6 +44,7 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
             year=year,
         )
     if not menu:
+        print("geototo", score)
         # Update the score
         await query.edit_message_text(
             text=BASE_MESSAGE.format(
