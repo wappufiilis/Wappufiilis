@@ -171,10 +171,6 @@ def YEAR_KEYBOARD(callBackData: str):
 
 
 def SCORE_KEYBOARD(callBackData: dict):
-    print("callback data is", callBackData)
-    data_json = json.dumps(callBackData)
-
-    print(f"Size of JSON string: {len(data_json)} bytes")
     scoreButtons = list(
         chunks(
             [
