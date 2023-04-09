@@ -2,7 +2,7 @@ from telegram import Update, constants
 from telegram.ext import CallbackContext, ContextTypes
 from telegram.helpers import escape_markdown
 
-from database.database import getUserInfo, putItem
+from database.database import putItem
 from keyboards import (
     ASSOCIATION_KEYBOARD,
     CAMPUS_KEYBOARD,
@@ -51,7 +51,6 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
             )
         elif "year" in options:
             year = options["year"]
-            user = getUserInfo(update.message.from_user.id)
             await query.edit_message_text(
                 text=GREETING_NEW.format(
                     options["year"],

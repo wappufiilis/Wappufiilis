@@ -50,7 +50,17 @@ def getUserInfo(user_id: str) -> dict:
     """
     print("aws", os.getenv("AWS_ACCESS_KEY_ID"), os.getenv("AWS_SECRET_ACCESS_KEY"))
     table = dynamodb.Table(os.getenv("DYNAMODB_USERS_TABLE_NAME"))
-    response = table.get_item(Key={"partition_key": f"user::{user_id}"})
+    try:
+        response = table.get_item(Key={"partition_key": f"user::{user_id}"})
+    except Exception as e:
+        print(";D", e)
+        return {
+            "campus": None,
+            "guild": None,
+            "year": None,
+            "lastWappuFiilis": None,
+            "lastWappuFiilisTimestamp": None,
+        }
     if "Item" in response:
         return response["Item"]
     else:
