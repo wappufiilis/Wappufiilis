@@ -16,3 +16,5 @@ Please select your student association\.
 """
 
 SELECT_YEAR = """Please tell me your fuksi year\."""
+
+SELECT_YEAR_GUILD = """Please tell me your fuksi year in {}\."""

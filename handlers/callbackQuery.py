@@ -5,7 +5,12 @@ from telegram.ext import CallbackContext, ContextTypes
 from telegram.helpers import escape_markdown
 
 from database.database import putItem
-from keyboards import ASSOCIATION_KEYBOARD, CAMPUS_KEYBOARD, SCORE_KEYBOARD
+from keyboards import (
+    ASSOCIATION_KEYBOARD,
+    CAMPUS_KEYBOARD,
+    SCORE_KEYBOARD,
+    YEAR_KEYBOARD,
+)
 from messages import *
 from utils import KeyboardKeys, MenuKeys, chunks, decompressCallBackData
 
@@ -67,6 +72,20 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
         await query.edit_message_text(
             text=SELECT_GUILD.format(campus),
             reply_markup=ASSOCIATION_KEYBOARD(
+                {
+                    KeyboardKeys.GUILD.value: guild,
+                    KeyboardKeys.CAMPUS.value: campus,
+                    KeyboardKeys.YEAR.value: year,
+                    "score": newScore,
+                    "timestamp": timestamp,
+                }
+            ),
+            parse_mode=constants.ParseMode.MARKDOWN_V2,
+        )
+    elif menu == MenuKeys.YEAR.value:
+        await query.edit_message_text(
+            text=SELECT_YEAR if not guild else SELECT_YEAR_GUILD.format(guild),
+            reply_markup=YEAR_KEYBOARD(
                 {
                     KeyboardKeys.GUILD.value: guild,
                     KeyboardKeys.CAMPUS.value: campus,

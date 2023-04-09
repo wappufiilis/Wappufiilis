@@ -61,7 +61,6 @@ def CAMPUS_KEYBOARD(callBackData: dict):
                             KeyboardKeys.CAMPUS.value
                         ],
                         KeyboardKeys.YEAR.value: callBackData[KeyboardKeys.YEAR.value],
-                        KeyboardKeys.MENU.value: MenuKeys.GUILD.value,
                     }
                 ),
             ),
@@ -91,32 +90,70 @@ def ASSOCIATION_KEYBOARD(callBackData: dict):
         )
     )
 
+    # Add option to go back
     guildButtons.append(
         [
-            InlineKeyboardButton("Back", callback_data="start"),
+            InlineKeyboardButton(
+                "Back",
+                callback_data=compressCallBackData(
+                    {
+                        KeyboardKeys.GUILD.value: callBackData[
+                            KeyboardKeys.GUILD.value
+                        ],
+                        KeyboardKeys.CAMPUS.value: callBackData[
+                            KeyboardKeys.CAMPUS.value
+                        ],
+                        KeyboardKeys.YEAR.value: callBackData[KeyboardKeys.YEAR.value],
+                        KeyboardKeys.MENU.value: MenuKeys.CAMPUS.value,
+                    }
+                ),
+            ),
         ]
     )
     return InlineKeyboardMarkup(guildButtons)
 
 
-def YEAR_KEYBOARD(callBackData: str):
+def YEAR_KEYBOARD(callBackData: dict):
     yearButtons = list(
         chunks(
             [
                 InlineKeyboardButton(
                     year,
-                    callback_data=f"{callBackData}::year:{year}",
+                    callback_data=compressCallBackData(
+                        {
+                            KeyboardKeys.GUILD.value: callBackData[
+                                KeyboardKeys.GUILD.value
+                            ],
+                            KeyboardKeys.CAMPUS.value: callBackData[
+                                KeyboardKeys.CAMPUS.value
+                            ],
+                            KeyboardKeys.YEAR.value: year,
+                            KeyboardKeys.MENU.value: MenuKeys.GUILD.value,
+                        }
+                    ),
                 )
                 for year in Vuodet
             ],
             3,
         )
     )
-    # remove the last pair from callbackData
-    goBackData = "::".join(callBackData.split("::")[:-1])
+    # Add option to go back
     yearButtons.append(
         [
-            InlineKeyboardButton("Back", callback_data=goBackData),
+            InlineKeyboardButton(
+                "Back",
+                callback_data=compressCallBackData(
+                    {
+                        KeyboardKeys.GUILD.value: callBackData[
+                            KeyboardKeys.GUILD.value
+                        ],
+                        KeyboardKeys.CAMPUS.value: callBackData[
+                            KeyboardKeys.CAMPUS.value
+                        ],
+                        KeyboardKeys.YEAR.value: callBackData[KeyboardKeys.YEAR.value],
+                    }
+                ),
+            ),
         ]
     )
 
