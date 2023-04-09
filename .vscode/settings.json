@@ -2,11 +2,18 @@
     "editor.formatOnSave": true,
     "python.formatting.provider": "black",
     "python.sortImports.args": [
-        "--profile", "black"
+        "--profile",
+        "black"
     ],
     "[python]": {
         "editor.codeActionsOnSave": {
             "source.organizeImports": true
         }
-    }
+    },
+    "yaml.schemas": {
+        "https://raw.githubusercontent.com/deployphp/deployer/master/src/schema.json": "file:///Users/tapiiri/Wappufiilis/.github/workflows/deploy.yml"
+    },
+    "python.analysis.extraPaths": [
+        "./package"
+    ]
 }
