@@ -45,6 +45,16 @@ module "analytics" {
   environment = var.environment
 }
 
+resource "aws_dynamodb_table" "user_data" {
+  name         = "FiilisUsers_${var.environment}"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "user_id"
+
+  attribute {
+    name = "user_id"
+    type = "S"
+  }
+}
 resource "aws_lambda_function" "lambda" {
   filename      = "lambda_function_payload.zip"
   function_name = "wappufiilis_bot_lambda_${var.environment}"
@@ -63,7 +73,7 @@ resource "aws_lambda_function" "lambda" {
       TOKEN                      = var.telegram_token
       TIMEZONE                   = "Europe/Helsinki"
       DYNAMODB_EVENTS_TABLE_NAME = module.analytics.table_name
-      DYNAMODB_USERS_TABLE_NAME  = aws_dynamodb_table.users.name
+      DYNAMODB_USERS_TABLE_NAME  = aws_dynamodb_table.user_data.name
     }
   }
   depends_on = [aws_iam_role_policy_attachment.lambda_logs, aws_cloudwatch_log_group.example]
@@ -177,15 +187,4 @@ resource "aws_lambda_permission" "apigw" {
 
 data "httpclient_request" "webhook_register" {
   url = "https://api.telegram.org/bot${var.telegram_token}/setWebhook?url=${aws_apigatewayv2_api.api.api_endpoint}/${random_id.random_path.hex}/"
-}
-
-resource "aws_dynamodb_table" "user_data" {
-  name         = "FiilisUsers_${var.environment}"
-  billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "user_id"
-
-  attribute {
-    name = "user_id"
-    type = "S"
-  }
 }
