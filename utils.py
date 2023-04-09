@@ -5,4 +5,8 @@ def chunks(lst, n):
 
 
 def userToCallbackData(user: dict):
-    return f"campus::{user['campus']}::guild::{user['guild']}::year::{user['year']}"
+    dataString = (
+        f"campus::{user['campus']}::guild::{user['guild']}::year::{user['year']}"
+    )
+    print("data string is", dataString)
+    return json.dumps(user)

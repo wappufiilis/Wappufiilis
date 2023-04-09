@@ -11,7 +11,6 @@ from utils import userToCallbackData
 async def home(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     # Need to get user data from database
     user = getUserInfo(update.message.from_user.id)
-    callbackData = userToCallbackData(user)
     await update.message.reply_text(
         text=GREETING_NEW.format(
             update.message.from_user.first_name,
@@ -19,7 +18,7 @@ async def home(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
             user["year"],
             user["lastWappuFiilis"],
         ),
-        reply_markup=SCORE_KEYBOARD(callbackData),
+        reply_markup=SCORE_KEYBOARD(user),
         parse_mode=constants.ParseMode.MARKDOWN_V2,
     )
     return -1

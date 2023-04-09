@@ -1,3 +1,5 @@
+import json
+
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
 from utils import chunks
@@ -168,13 +170,22 @@ def YEAR_KEYBOARD(callBackData: str):
     return InlineKeyboardMarkup(yearButtons)
 
 
-def SCORE_KEYBOARD(callBackData: str):
+def SCORE_KEYBOARD(callBackData: dict):
+    print("callback data is", callBackData)
+    data_json = json.dumps(callBackData)
+
+    print(f"Size of JSON string: {len(data_json)} bytes")
     scoreButtons = list(
         chunks(
             [
                 InlineKeyboardButton(
                     score,
-                    callback_data=f"{callBackData}::newScore:{score}",
+                    callback_data=json.dumps(
+                        {
+                            **callBackData,
+                            "newScore": score,
+                        }
+                    ),
                 )
                 for score in range(0, 11)
             ],
@@ -184,9 +195,19 @@ def SCORE_KEYBOARD(callBackData: str):
     # Add buttons to go to guild select (campus first) and year select
     scoreButtons.append(
         [
-            InlineKeyboardButton("Guild", callback_data=callBackData + "menu::guild"),
-            InlineKeyboardButton("Year", callback_data=callBackData + "menu::year"),
-        ]
+            InlineKeyboardButton(
+                "Select guild",
+                callback_data=json.dumps({**callBackData, "menu": "guild"}),
+            )
+        ],
+    )
+    scoreButtons.append(
+        [
+            InlineKeyboardButton(
+                "Select fuksi year",
+                callback_data=json.dumps({**callBackData, "menu": "year"}),
+            ),
+        ],
     )
 
     # remove the last pair from callbackData

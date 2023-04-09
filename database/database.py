@@ -1,6 +1,7 @@
 import os
 import random
 from datetime import datetime
+from enum import Enum
 
 import boto3
 from botocore.credentials import Credentials
@@ -16,6 +17,15 @@ client = boto3.client(
     aws_secret_access_key=creds.secret_key,
 )
 dynamodb = boto3.resource("dynamodb", region_name=os.getenv("AWS_DEFAULT_REGION"))
+
+
+class Color(Enum):
+    USER_ID = 1
+    GUILD = 2
+    CAMPUS = 3
+    YEAR = 4
+    SCORE = 5
+    TIMESTAMP = 6
 
 
 def saveUserInfo(
