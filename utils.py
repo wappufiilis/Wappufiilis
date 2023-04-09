@@ -165,3 +165,9 @@ Killat = {
         "Algo",
     ],
 }
+
+
+def dropFromCallbackData(data: dict, key: str):
+    if key in data:
+        del data[key]
+    return data

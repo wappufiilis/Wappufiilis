@@ -13,16 +13,9 @@ from utils import (
     compressCallBackData,
 )
 
-OK_KEYBOARD = InlineKeyboardMarkup(
-    [
-        [
-            InlineKeyboardButton("Ok", callback_data="delete"),
-        ],
-    ]
-)
-
 
 def CAMPUS_KEYBOARD(callBackData: dict):
+    print("got campus keyboard", callBackData)
     keyboard = list(
         chunks(
             [
@@ -70,6 +63,8 @@ def CAMPUS_KEYBOARD(callBackData: dict):
 
 
 def ASSOCIATION_KEYBOARD(callBackData: dict):
+    print("got ASSOCIATION_KEYBOARD", callBackData)
+
     guildButtons = list(
         chunks(
             [
@@ -80,6 +75,9 @@ def ASSOCIATION_KEYBOARD(callBackData: dict):
                             KeyboardKeys.GUILD.value: guild,
                             KeyboardKeys.CAMPUS.value: callBackData[
                                 KeyboardKeys.CAMPUS.value
+                            ],
+                            KeyboardKeys.YEAR.value: callBackData[
+                                KeyboardKeys.YEAR.value
                             ],
                         }
                     ),
@@ -114,6 +112,7 @@ def ASSOCIATION_KEYBOARD(callBackData: dict):
 
 
 def YEAR_KEYBOARD(callBackData: dict):
+    print("got YEAR_KEYBOARD", callBackData)
     yearButtons = list(
         chunks(
             [
@@ -160,6 +159,7 @@ def YEAR_KEYBOARD(callBackData: dict):
 
 
 def SCORE_KEYBOARD(callBackData: dict):
+    print("got SCORE_KEYBOARD", callBackData)
     scoreButtons = list(
         chunks(
             [
@@ -225,5 +225,4 @@ def SCORE_KEYBOARD(callBackData: dict):
         ],
     )
 
-    # remove the last pair from callbackData
     return InlineKeyboardMarkup(scoreButtons)
