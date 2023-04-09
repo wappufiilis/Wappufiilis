@@ -2,7 +2,7 @@ from telegram import Update, constants
 from telegram.ext import CallbackContext, ContextTypes
 from telegram.helpers import escape_markdown
 
-from database.database import putItem
+from database.database import getUserInfo, putItem
 from keyboards import (
     ASSOCIATION_KEYBOARD,
     CAMPUS_KEYBOARD,
@@ -41,7 +41,7 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
         if "newScore" in options:
             putItem(options["year"], options["guild"], options["newScore"])
             await query.edit_message_text(
-                text=FIILIS_DASHBOARD.format(
+                text=GREETING_NEW.format(
                     options["year"],
                     options["guild"],
                     options["newScore"],
@@ -51,8 +51,12 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
             )
         elif "year" in options:
             year = options["year"]
+            user = getUserInfo(update.message.from_user.id)
             await query.edit_message_text(
-                text=ENTER_FIILIS.format(year),
+                text=GREETING_NEW.format(
+                    options["year"],
+                    options["guild"],
+                ),
                 reply_markup=SCORE_KEYBOARD(callbackData),
                 parse_mode=constants.ParseMode.MARKDOWN_V2,
             )

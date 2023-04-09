@@ -3,6 +3,9 @@ import json
 import os
 
 from dotenv import load_dotenv
+
+load_dotenv()  # take environment variables from .env.
+
 from telegram import Update, constants
 from telegram.ext import (
     Application,
@@ -17,11 +20,6 @@ from telegram.ext import (
 
 from handlers.callbackQuery import meta_inline_menu
 from handlers.commands import home
-from keyboards import CAMPUS_KEYBOARD
-from messages import GREETING_NEW
-
-load_dotenv()  # take environment variables from .env.
-
 
 application = Application.builder().token(os.getenv("TOKEN")).build()
 

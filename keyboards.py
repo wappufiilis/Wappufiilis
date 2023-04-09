@@ -11,22 +11,27 @@ OK_KEYBOARD = InlineKeyboardMarkup(
 )
 
 
-CAMPUS_KEYBOARD = InlineKeyboardMarkup(
-    [
+def CAMPUS_KEYBOARD(user):
+    baseCallback = (
+        f"campus::{user['campus']}::guild::{user['guild']}::year::{user['year']}"
+    )
+    keyboard = InlineKeyboardMarkup(
         [
-            InlineKeyboardButton("Otaniemi", callback_data="campus:Aalto"),
-            InlineKeyboardButton("Tampere", callback_data="campus:Tampere"),
-        ],
-        [
-            InlineKeyboardButton("Turku", callback_data="campus:Turku"),
-            InlineKeyboardButton("lappeen Ranta", callback_data="campus:LUT"),
-        ],
-        [
-            InlineKeyboardButton("Jyväskylä", callback_data="campus:Jyväskylä"),
-            InlineKeyboardButton("Oulu", callback_data="campus:Oulu"),
-        ],
-    ]
-)
+            [
+                InlineKeyboardButton("Otaniemi", callback_data="campus:Aalto"),
+                InlineKeyboardButton("Tampere", callback_data="campus:Tampere"),
+            ],
+            [
+                InlineKeyboardButton("Turku", callback_data="campus:Turku"),
+                InlineKeyboardButton("lappeen Ranta", callback_data="campus:LUT"),
+            ],
+            [
+                InlineKeyboardButton("Jyväskylä", callback_data="campus:Jyväskylä"),
+                InlineKeyboardButton("Oulu", callback_data="campus:Oulu"),
+            ],
+        ]
+    )
+
 
 Killat = {
     "Aalto": [
@@ -176,12 +181,13 @@ def SCORE_KEYBOARD(callBackData: str):
             3,
         )
     )
-    # remove the last pair from callbackData
-    goBackData = "::".join(callBackData.split("::")[:-1])
+    # Add buttons to go to guild select (campus first) and year select
     scoreButtons.append(
         [
-            InlineKeyboardButton("Back", callback_data=goBackData),
+            InlineKeyboardButton("Guild", callback_data=callBackData + "menu::guild"),
+            InlineKeyboardButton("Year", callback_data=callBackData + "menu::year"),
         ]
     )
 
+    # remove the last pair from callbackData
     return InlineKeyboardMarkup(scoreButtons)
