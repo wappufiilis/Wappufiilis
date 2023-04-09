@@ -1,4 +1,4 @@
-GREETING_NEW = """Hello {}\!
+BASE_MESSAGE = """Hello {}\!
 With this bot, you can track your wappufiilis\.
 
 Your Guild: {}\.

@@ -2,7 +2,7 @@ import json
 
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
-from utils import chunks
+from utils import KeyboardKeys, chunks
 
 OK_KEYBOARD = InlineKeyboardMarkup(
     [
@@ -182,8 +182,10 @@ def SCORE_KEYBOARD(callBackData: dict):
                     score,
                     callback_data=json.dumps(
                         {
-                            **callBackData,
-                            "newScore": score,
+                            KeyboardKeys.GUILD.value: callBackData["guild"],
+                            KeyboardKeys.CAMPUS.value: callBackData["campus"],
+                            KeyboardKeys.YEAR.value: callBackData["year"],
+                            KeyboardKeys.NEW_SCORE.value: score,
                         }
                     ),
                 )
@@ -197,7 +199,14 @@ def SCORE_KEYBOARD(callBackData: dict):
         [
             InlineKeyboardButton(
                 "Select guild",
-                callback_data=json.dumps({**callBackData, "menu": "guild"}),
+                callback_data=json.dumps(
+                    {
+                        KeyboardKeys.GUILD.value: callBackData["guild"],
+                        KeyboardKeys.CAMPUS.value: callBackData["campus"],
+                        KeyboardKeys.YEAR.value: callBackData["year"],
+                        KeyboardKeys.MENU.value: "guild",
+                    }
+                ),
             )
         ],
     )
@@ -205,7 +214,14 @@ def SCORE_KEYBOARD(callBackData: dict):
         [
             InlineKeyboardButton(
                 "Select fuksi year",
-                callback_data=json.dumps({**callBackData, "menu": "year"}),
+                callback_data=json.dumps(
+                    {
+                        KeyboardKeys.GUILD.value: callBackData["guild"],
+                        KeyboardKeys.CAMPUS.value: callBackData["campus"],
+                        KeyboardKeys.YEAR.value: callBackData["year"],
+                        KeyboardKeys.MENU.value: "year",
+                    }
+                ),
             ),
         ],
     )

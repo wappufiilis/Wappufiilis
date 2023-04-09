@@ -1,7 +1,6 @@
 import os
 import random
 from datetime import datetime
-from enum import Enum
 
 import boto3
 from botocore.credentials import Credentials
@@ -19,22 +18,12 @@ client = boto3.client(
 dynamodb = boto3.resource("dynamodb", region_name=os.getenv("AWS_DEFAULT_REGION"))
 
 
-class Color(Enum):
-    USER_ID = 1
-    GUILD = 2
-    CAMPUS = 3
-    YEAR = 4
-    SCORE = 5
-    TIMESTAMP = 6
-
-
 def saveUserInfo(
     user_id: str,
     campus: str = None,
     guild: str = None,
     year: str = None,
     lastWappuFiilis: int = None,
-    lastWappuFiilisTimestamp: int = None,
 ):
     """
     Save user info, if user already exists, update the info
@@ -47,8 +36,7 @@ def saveUserInfo(
             "campus": campus,
             "guild": guild,
             "year": year,
-            "lastWappuFiilis": lastWappuFiilis,
-            "lastWappuFiilisTimestamp": lastWappuFiilisTimestamp,
+            "wappu_fiilises": lastWappuFiilis,
         }
     )
 
@@ -86,6 +74,7 @@ def putItem(year, guild, campus, score):
             "partition_key": f"{year}::{guild}::{rand}",
             "year": year,
             "guild": guild,
+            "campus": campus,
             "score": score,
             "timestamp": timestamp,
         }
