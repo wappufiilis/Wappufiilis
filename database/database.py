@@ -23,6 +23,19 @@ def saveUserInfo(user_id: str, campus: str = None, guild: str = None, year: str 
     )
 
 
+def getUserInfo(user_id: str):
+    """
+    Get user info
+    If no user exists, return None
+    """
+    table = dynamodb.Table(os.getenv("DYNAMODB_USERS_TABLE_NAME"))
+    response = table.get_item(Key={"partition_key": f"user::{user_id}"})
+    if "Item" in response:
+        return response["Item"]
+    else:
+        return None
+
+
 def putItem(year, guild, score):
     table = dynamodb.Table(os.getenv("DYNAMODB_EVENTS_TABLE_NAME"))
     timestamp = int(datetime.now().timestamp())
