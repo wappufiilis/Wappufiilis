@@ -23,23 +23,30 @@ def putItem(year, guild, score):
 
 
 def getAverage(day: str, guild: str = None):
+    """
+    Get averege fiilis for the day (based on the timestamp)
+    If guild is specified, get the average for the guild
+    """
     table = dynamodb.Table(os.getenv("DYNAMODB_TABLE_NAME"))
     if guild:
         response = table.query(
-            KeyConditionExpression="partition_key = :pk",
+            IndexName="guild-index",
+            KeyConditionExpression="guild = :g",
+            FilterExpression="begins_with(partition_key, :p)",
             ExpressionAttributeValues={
-                ":pk": f"{day}::{guild}",
+                ":g": guild,
+                ":p": day,
             },
         )
     else:
         response = table.query(
-            KeyConditionExpression="partition_key = :pk",
+            KeyConditionExpression="begins_with(partition_key, :p)",
             ExpressionAttributeValues={
-                ":pk": f"{day}",
+                ":p": day,
             },
         )
     items = response["Items"]
-    if len(items) == 0:
-        return None
+    if items:
+        return sum([int(item["score"]) for item in items]) / len(items)
     else:
-        return sum([item["score"] for item in items]) / len(items)
+        return 0
