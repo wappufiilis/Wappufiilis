@@ -1,7 +1,5 @@
-import json
-
 from telegram import Update, constants
-from telegram.ext import CallbackContext, ContextTypes
+from telegram.ext import ContextTypes
 from telegram.helpers import escape_markdown
 
 from database.database import putItem
@@ -12,7 +10,7 @@ from keyboards import (
     YEAR_KEYBOARD,
 )
 from messages import *
-from utils import KeyboardKeys, MenuKeys, chunks, decompressCallBackData
+from utils import Kampus, KeyboardKeys, MenuKeys, decompressCallBackData
 
 
 async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -48,8 +46,8 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
                     KeyboardKeys.GUILD.value: guild,
                     KeyboardKeys.CAMPUS.value: campus,
                     KeyboardKeys.YEAR.value: year,
-                    "score": newScore,
-                    "timestamp": timestamp,
+                    KeyboardKeys.SCORE.value: newScore,
+                    KeyboardKeys.TIMESTAMP.value: timestamp,
                 }
             ),
             parse_mode=constants.ParseMode.MARKDOWN_V2,
@@ -63,21 +61,23 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
                     KeyboardKeys.CAMPUS.value: campus,
                     KeyboardKeys.YEAR.value: year,
                     "score": newScore,
-                    "timestamp": timestamp,
+                    KeyboardKeys.TIMESTAMP.value: timestamp,
                 }
             ),
             parse_mode=constants.ParseMode.MARKDOWN_V2,
         )
     elif menu == MenuKeys.GUILD.value:
         await query.edit_message_text(
-            text=SELECT_GUILD.format(campus),
+            text=SELECT_GUILD.format(
+                Kampus(campus).name.lower().capitalize(),
+            ),
             reply_markup=ASSOCIATION_KEYBOARD(
                 {
                     KeyboardKeys.GUILD.value: guild,
                     KeyboardKeys.CAMPUS.value: campus,
                     KeyboardKeys.YEAR.value: year,
                     "score": newScore,
-                    "timestamp": timestamp,
+                    KeyboardKeys.TIMESTAMP.value: timestamp,
                 }
             ),
             parse_mode=constants.ParseMode.MARKDOWN_V2,
@@ -91,7 +91,7 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
                     KeyboardKeys.CAMPUS.value: campus,
                     KeyboardKeys.YEAR.value: year,
                     "score": newScore,
-                    "timestamp": timestamp,
+                    KeyboardKeys.TIMESTAMP.value: timestamp,
                 }
             ),
             parse_mode=constants.ParseMode.MARKDOWN_V2,
