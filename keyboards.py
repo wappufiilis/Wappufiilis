@@ -1,8 +1,9 @@
+import hashlib
 import json
 
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
-from utils import KeyboardKeys, chunks
+from utils import Kampus, KeyboardKeys, Killat, Vuodet, chunks, encodeDarkMagic
 
 OK_KEYBOARD = InlineKeyboardMarkup(
     [
@@ -13,107 +14,57 @@ OK_KEYBOARD = InlineKeyboardMarkup(
 )
 
 
-def CAMPUS_KEYBOARD(user):
-    baseCallback = (
-        f"campus::{user['campus']}::guild::{user['guild']}::year::{user['year']}"
+def CAMPUS_KEYBOARD(callBackData: dict):
+    keyboard = list(
+        chunks(
+            [
+                [
+                    InlineKeyboardButton(
+                        campus.name.lower().capitalize(),
+                        callback_data=encodeDarkMagic(
+                            {
+                                KeyboardKeys.GUILD.value: callBackData["guild"],
+                                KeyboardKeys.CAMPUS.value: campus.value,
+                                KeyboardKeys.YEAR.value: callBackData["year"],
+                                KeyboardKeys.MENU.value: "guild",
+                            }
+                        ),
+                    )
+                    for campus in Kampus
+                ]
+            ],
+            3,
+        )
     )
-    keyboard = InlineKeyboardMarkup(
+
+    # Add option to go back
+    keyboard.append(
         [
-            [
-                InlineKeyboardButton("Otaniemi", callback_data="campus:Aalto"),
-                InlineKeyboardButton("Tampere", callback_data="campus:Tampere"),
-            ],
-            [
-                InlineKeyboardButton("Turku", callback_data="campus:Turku"),
-                InlineKeyboardButton("lappeen Ranta", callback_data="campus:LUT"),
-            ],
-            [
-                InlineKeyboardButton("Jyväskylä", callback_data="campus:Jyväskylä"),
-                InlineKeyboardButton("Oulu", callback_data="campus:Oulu"),
-            ],
+            InlineKeyboardButton(
+                "Back",
+                callback_data=encodeDarkMagic(callBackData),
+            ),
         ]
     )
+    return InlineKeyboardMarkup(keyboard)
 
 
-Killat = {
-    "Aalto": [
-        "SIK",
-        "AK",
-        "AS",
-        "Athene",
-        "DG",
-        "FK",
-        "Inkubio",
-        "KIK",
-        "MK",
-        "Prodeko",
-        "PJK",
-        "IK",
-        "TiK",
-        "VK",
-        "KK",
-        "TF",
-    ],
-    "LUT": [
-        "Armatuuri",
-        "Cluster",
-        "Kaplaaki",
-        "KeTeK",
-        "KRK",
-        "Lateksii",
-        "Pelletti",
-        "Sätky",
-    ],
-    "Oulu": [
-        "OPTIEM",
-        "Arkkitehtikilta",
-        "Konekilta",
-        "Prosessikilta",
-        "OTiT",
-        "Ympäristörakentajakilta",
-        "SIK",
-    ],
-    "Tampere": [
-        "Arkkitehtikilta",
-        "Autek",
-        "Bioner",
-        "Indecs",
-        "INTO",
-        "KoRK",
-        "MIK",
-        "TARAKI",
-        "Skilta",
-        "Hiukkanen",
-        "Man@ger",
-        "TiTe",
-        "Urbanum",
-        "YKI",
-    ],
-    "Turku": [
-        "Adamas",
-        "Asklepio",
-        "Digit",
-        "Machina",
-        "Nucleus",
-        "Kemistklubben",
-        "DaTe",
-    ],
-    "Vaasa": ["Tutti ry"],
-    "Jyväskylä": [
-        "Algo",
-    ],
-}
-
-
-def ASSOCIATION_KEYBOARD(campus: str):
+def ASSOCIATION_KEYBOARD(callBackData: dict):
     guildButtons = list(
         chunks(
             [
                 InlineKeyboardButton(
                     guild,
-                    callback_data=f"campus:{campus}::guild:{guild}",
+                    callback_data=encodeDarkMagic(
+                        {
+                            KeyboardKeys.GUILD.value: guild,
+                            KeyboardKeys.CAMPUS.value: callBackData[
+                                KeyboardKeys.CAMPUS.value
+                            ],
+                        }
+                    ),
                 )
-                for guild in Killat[campus]
+                for guild in Killat[callBackData[KeyboardKeys.CAMPUS.value]]
             ],
             3,
         )
@@ -125,25 +76,6 @@ def ASSOCIATION_KEYBOARD(campus: str):
         ]
     )
     return InlineKeyboardMarkup(guildButtons)
-
-
-Vuodet = [
-    "aNcient",
-    "2010",
-    "2011",
-    "2012",
-    "2013",
-    "2014",
-    "2015",
-    "2016",
-    "2017",
-    "2018",
-    "2019",
-    "2020",
-    "2021",
-    "2022",
-    "2023",
-]
 
 
 def YEAR_KEYBOARD(callBackData: str):
@@ -176,7 +108,7 @@ def SCORE_KEYBOARD(callBackData: dict):
             [
                 InlineKeyboardButton(
                     score,
-                    callback_data=json.dumps(
+                    callback_data=encodeDarkMagic(
                         {
                             KeyboardKeys.GUILD.value: callBackData["guild"],
                             KeyboardKeys.CAMPUS.value: callBackData["campus"],
@@ -195,12 +127,12 @@ def SCORE_KEYBOARD(callBackData: dict):
         [
             InlineKeyboardButton(
                 "Select guild",
-                callback_data=json.dumps(
+                callback_data=encodeDarkMagic(
                     {
                         KeyboardKeys.GUILD.value: callBackData["guild"],
                         KeyboardKeys.CAMPUS.value: callBackData["campus"],
                         KeyboardKeys.YEAR.value: callBackData["year"],
-                        KeyboardKeys.MENU.value: "guild",
+                        KeyboardKeys.MENU.value: "campus",
                     }
                 ),
             )
@@ -210,7 +142,7 @@ def SCORE_KEYBOARD(callBackData: dict):
         [
             InlineKeyboardButton(
                 "Select fuksi year",
-                callback_data=json.dumps(
+                callback_data=encodeDarkMagic(
                     {
                         KeyboardKeys.GUILD.value: callBackData["guild"],
                         KeyboardKeys.CAMPUS.value: callBackData["campus"],

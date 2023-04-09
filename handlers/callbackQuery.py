@@ -5,21 +5,16 @@ from telegram.ext import CallbackContext, ContextTypes
 from telegram.helpers import escape_markdown
 
 from database.database import putItem
-from keyboards import (
-    ASSOCIATION_KEYBOARD,
-    CAMPUS_KEYBOARD,
-    SCORE_KEYBOARD,
-    YEAR_KEYBOARD,
-)
+from keyboards import ASSOCIATION_KEYBOARD, CAMPUS_KEYBOARD, SCORE_KEYBOARD
 from messages import *
-from utils import KeyboardKeys, chunks
+from utils import KeyboardKeys, chunks, decodeDarkMagic
 
 
 async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Parses the CallbackQuery and updates the message text."""
     query = update.callback_query
     await query.answer()
-    callbackData = json.loads(query.data)
+    callbackData = decodeDarkMagic(query.data)
     print("callback data is", callbackData)
     guild = callbackData.get(KeyboardKeys.GUILD.value)
     campus = callbackData.get(KeyboardKeys.CAMPUS.value)
@@ -44,6 +39,34 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
                 newScore,
             ),
             reply_markup=SCORE_KEYBOARD(
+                {
+                    "guild": guild,
+                    "campus": campus,
+                    "year": year,
+                    "score": newScore,
+                    "timestamp": timestamp,
+                }
+            ),
+            parse_mode=constants.ParseMode.MARKDOWN_V2,
+        )
+    elif menu == "campus":
+        await query.edit_message_text(
+            text=CAMPUS_SELECT,
+            reply_markup=CAMPUS_KEYBOARD(
+                {
+                    "guild": guild,
+                    "campus": campus,
+                    "year": year,
+                    "score": newScore,
+                    "timestamp": timestamp,
+                }
+            ),
+            parse_mode=constants.ParseMode.MARKDOWN_V2,
+        )
+    elif menu == "guild":
+        await query.edit_message_text(
+            text=SELECT_GUILD,
+            reply_markup=ASSOCIATION_KEYBOARD(
                 {
                     "guild": guild,
                     "campus": campus,
