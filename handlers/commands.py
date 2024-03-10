@@ -1,7 +1,8 @@
+import datetime
 from telegram import Update, constants
 from telegram.ext import ContextTypes
 
-from database.database import getUserInfo, saveUserInfo
+from database.database import getAverage, getUserInfo, saveUserInfo
 from handlers.callbackQuery import meta_inline_menu
 from keyboards import SCORE_KEYBOARD
 from messages import BASE_MESSAGE, RESULTS_MESSAGE
@@ -38,8 +39,14 @@ async def results(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     user = getUserInfo(update.message.from_user.id)
     if not user:
         user = saveUserInfo(update.message.from_user.id)
+
+    day = datetime.datetime.now().strftime("%Y-%m-%d")
+    average = getAverage(
+        day=day,
+        guild=user.get(DatabaseKeys.GUILD.value),
+    )
     await update.message.reply_text(
-        text=RESULTS_MESSAGE.format(4),
+        text=RESULTS_MESSAGE.format(average.replace(".", ",")),
         reply_markup=SCORE_KEYBOARD(
             {
                 KeyboardKeys.GUILD.value: user.get(DatabaseKeys.GUILD.value),
