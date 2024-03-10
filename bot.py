@@ -19,7 +19,7 @@ from telegram.ext import (
 )
 
 from handlers.callbackQuery import meta_inline_menu
-from handlers.commands import home
+from handlers.commands import home, results
 
 application = Application.builder().token(os.getenv("TOKEN")).build()
 
@@ -49,6 +49,7 @@ def add_user_handlers():
     conv_handler = ConversationHandler(
         entry_points=[
             CommandHandler("start", home),
+            CommandHandler("results", results),
             CallbackQueryHandler(meta_inline_menu),
         ],
         states={},

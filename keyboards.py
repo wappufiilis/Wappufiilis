@@ -224,5 +224,24 @@ def SCORE_KEYBOARD(callBackData: dict):
             ),
         ],
     )
+    scoreButtons.append(
+        [
+            InlineKeyboardButton(
+                "Results",
+                callback_data=compressCallBackData(
+                    {
+                        KeyboardKeys.GUILD.value: callBackData[
+                            KeyboardKeys.GUILD.value
+                        ],
+                        KeyboardKeys.CAMPUS.value: callBackData[
+                            KeyboardKeys.CAMPUS.value
+                        ],
+                        KeyboardKeys.YEAR.value: callBackData[KeyboardKeys.YEAR.value],
+                        KeyboardKeys.MENU.value: MenuKeys.RESULTS.value,
+                    }
+                ),
+            ),
+        ],
+    )
 
     return InlineKeyboardMarkup(scoreButtons)

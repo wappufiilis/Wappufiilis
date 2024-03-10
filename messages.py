@@ -18,3 +18,5 @@ Please select your student association\.
 SELECT_YEAR = """Please tell me your fuksi year\."""
 
 SELECT_YEAR_GUILD = """Please tell me your fuksi year in {}\."""
+
+RESULTS_MESSAGE = """Here is the average wappufiilis for today: {}/10\."""

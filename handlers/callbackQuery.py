@@ -2,7 +2,7 @@ from telegram import Update, constants
 from telegram.ext import ContextTypes
 from telegram.helpers import escape_markdown
 
-from database.database import putItem, saveUserInfo
+from database.database import getAverage, putItem, saveUserInfo
 from keyboards import ASSOCIATION_KEYBOARD, CAMPUS_KEYBOARD, SCORE_KEYBOARD
 from messages import *
 from utils import Kampus, KeyboardKeys, MenuKeys, decompressCallBackData
@@ -98,6 +98,22 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
         await query.edit_message_text(
             text=SELECT_YEAR if not guild else SELECT_YEAR_GUILD.format(guild),
             reply_markup=YEAR_KEYBOARD(
+                {
+                    KeyboardKeys.GUILD.value: guild,
+                    KeyboardKeys.CAMPUS.value: campus,
+                    KeyboardKeys.YEAR.value: year,
+                    KeyboardKeys.SCORE.value: newScore,
+                    KeyboardKeys.TIMESTAMP.value: timestamp,
+                }
+            ),
+            parse_mode=constants.ParseMode.MARKDOWN_V2,
+        )
+    elif menu == MenuKeys.RESULTS.value:
+        results = 4 #getAverage(day=timestamp, guild=guild)
+
+        await query.edit_message_text(
+            text=RESULTS_MESSAGE.format(results),
+            reply_markup=SCORE_KEYBOARD(
                 {
                     KeyboardKeys.GUILD.value: guild,
                     KeyboardKeys.CAMPUS.value: campus,
