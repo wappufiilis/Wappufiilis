@@ -1,4 +1,4 @@
-BASE_MESSAGE = """Track you wappufiilis for today\!
+BASE_MESSAGE = """Hi {} - track you wappufiilis with me\!
 
 Your Guild: {}
 Your Year: {}
