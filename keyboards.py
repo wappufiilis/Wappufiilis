@@ -159,7 +159,6 @@ def YEAR_KEYBOARD(callBackData: dict):
 
 
 def SCORE_KEYBOARD(callBackData: dict):
-    print("got SCORE_KEYBOARD", callBackData)
     scoreButtons = list(
         chunks(
             [

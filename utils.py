@@ -144,7 +144,7 @@ Killat = {
         "Konekilta",
         "Prosessikilta",
         "OTiT",
-        "Ymp.rak.kilta",  # Ympäristörakentajakilta
+        "YMP",  # Ympäristörakentajakilta
         "SIK",
     ],
     Kampus.TAMPERE.value: [
