@@ -13,13 +13,14 @@ async def home(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     user = getUserInfo(update.message.from_user.id)
     if not user:
         user = saveUserInfo(update.message.from_user.id)
+    message = BASE_MESSAGE.format(
+        update.message.from_user.first_name,
+        user.get(DatabaseKeys.GUILD.value),
+        user.get(DatabaseKeys.YEAR.value),
+        user.get(DatabaseKeys.LAST_SCORE.value),
+    )
     await update.message.reply_text(
-        text=BASE_MESSAGE.format(
-            update.message.from_user.first_name,
-            user.get(DatabaseKeys.GUILD.value),
-            user.get(DatabaseKeys.YEAR.value),
-            user.get(DatabaseKeys.LAST_SCORE.value),
-        ),
+        text=message,
         reply_markup=SCORE_KEYBOARD(
             {
                 KeyboardKeys.GUILD.value: user.get(DatabaseKeys.GUILD.value),
