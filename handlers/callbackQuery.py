@@ -3,7 +3,12 @@ from telegram.ext import ContextTypes
 from telegram.helpers import escape_markdown
 
 from database.database import putItem, saveUserInfo
-from keyboards import ASSOCIATION_KEYBOARD, CAMPUS_KEYBOARD, SCORE_KEYBOARD
+from keyboards import (
+    ASSOCIATION_KEYBOARD,
+    CAMPUS_KEYBOARD,
+    SCORE_KEYBOARD,
+    YEAR_KEYBOARD,
+)
 from messages import *
 from utils import Kampus, KeyboardKeys, MenuKeys, decompressCallBackData
 
