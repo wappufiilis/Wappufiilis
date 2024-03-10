@@ -4,7 +4,7 @@ from telegram.ext import ContextTypes
 
 from database.database import getAverage, getUserInfo, saveUserInfo
 from handlers.callbackQuery import meta_inline_menu
-from keyboards import SCORE_KEYBOARD
+from keyboards import MAIN_MENU_KEYBOARD, SCORE_KEYBOARD
 from messages import BASE_MESSAGE, RESULTS_MESSAGE
 from utils import DatabaseKeys, KeyboardKeys
 
@@ -22,7 +22,7 @@ async def home(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     )
     await update.message.reply_text(
         text=message,
-        reply_markup=SCORE_KEYBOARD(
+        reply_markup=MAIN_MENU_KEYBOARD(
             {
                 KeyboardKeys.GUILD.value: user.get(DatabaseKeys.GUILD.value),
                 KeyboardKeys.CAMPUS.value: user.get(DatabaseKeys.CAMPUS.value),
@@ -47,7 +47,7 @@ async def results(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     )
     await update.message.reply_text(
         text=RESULTS_MESSAGE.format(average.replace(".", ",")),
-        reply_markup=SCORE_KEYBOARD(
+        reply_markup=MAIN_MENU_KEYBOARD(
             {
                 KeyboardKeys.GUILD.value: user.get(DatabaseKeys.GUILD.value),
                 KeyboardKeys.CAMPUS.value: user.get(DatabaseKeys.CAMPUS.value),

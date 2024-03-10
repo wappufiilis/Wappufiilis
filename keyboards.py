@@ -23,13 +23,8 @@ def CAMPUS_KEYBOARD(callBackData: dict):
                     campus.name.lower().capitalize(),
                     callback_data=compressCallBackData(
                         {
-                            KeyboardKeys.GUILD.value: callBackData[
-                                KeyboardKeys.GUILD.value
-                            ],
-                            KeyboardKeys.CAMPUS.value: campus.value,
-                            KeyboardKeys.YEAR.value: callBackData[
-                                KeyboardKeys.YEAR.value
-                            ],
+                                **callBackData,
+                                KeyboardKeys.CAMPUS.value: campus.value,
                             KeyboardKeys.MENU.value: MenuKeys.GUILD.value,
                         }
                     ),
@@ -47,13 +42,8 @@ def CAMPUS_KEYBOARD(callBackData: dict):
                 "Back",
                 callback_data=compressCallBackData(
                     {
-                        KeyboardKeys.GUILD.value: callBackData[
-                            KeyboardKeys.GUILD.value
-                        ],
-                        KeyboardKeys.CAMPUS.value: callBackData[
-                            KeyboardKeys.CAMPUS.value
-                        ],
-                        KeyboardKeys.YEAR.value: callBackData[KeyboardKeys.YEAR.value],
+                        **callBackData,
+                        KeyboardKeys.MENU.value: MenuKeys.PERSONAL_INFO.value,
                     }
                 ),
             ),
@@ -72,13 +62,9 @@ def ASSOCIATION_KEYBOARD(callBackData: dict):
                     guild,
                     callback_data=compressCallBackData(
                         {
+                            **callBackData,
                             KeyboardKeys.GUILD.value: guild,
-                            KeyboardKeys.CAMPUS.value: callBackData[
-                                KeyboardKeys.CAMPUS.value
-                            ],
-                            KeyboardKeys.YEAR.value: callBackData[
-                                KeyboardKeys.YEAR.value
-                            ],
+                            KeyboardKeys.MENU.value: MenuKeys.PERSONAL_INFO.value,
                         }
                     ),
                 )
@@ -95,14 +81,8 @@ def ASSOCIATION_KEYBOARD(callBackData: dict):
                 "Back",
                 callback_data=compressCallBackData(
                     {
-                        KeyboardKeys.GUILD.value: callBackData[
-                            KeyboardKeys.GUILD.value
-                        ],
-                        KeyboardKeys.CAMPUS.value: callBackData[
-                            KeyboardKeys.CAMPUS.value
-                        ],
-                        KeyboardKeys.YEAR.value: callBackData[KeyboardKeys.YEAR.value],
-                        KeyboardKeys.MENU.value: MenuKeys.CAMPUS.value,
+                        **callBackData,
+                        KeyboardKeys.MENU.value: MenuKeys.PERSONAL_INFO.value,
                     }
                 ),
             ),
@@ -120,13 +100,9 @@ def YEAR_KEYBOARD(callBackData: dict):
                     year,
                     callback_data=compressCallBackData(
                         {
-                            KeyboardKeys.GUILD.value: callBackData[
-                                KeyboardKeys.GUILD.value
-                            ],
-                            KeyboardKeys.CAMPUS.value: callBackData[
-                                KeyboardKeys.CAMPUS.value
-                            ],
+                            **callBackData,
                             KeyboardKeys.YEAR.value: year,
+                            KeyboardKeys.MENU.value: MenuKeys.PERSONAL_INFO.value,
                         }
                     ),
                 )
@@ -142,13 +118,8 @@ def YEAR_KEYBOARD(callBackData: dict):
                 "Back",
                 callback_data=compressCallBackData(
                     {
-                        KeyboardKeys.GUILD.value: callBackData[
-                            KeyboardKeys.GUILD.value
-                        ],
-                        KeyboardKeys.CAMPUS.value: callBackData[
-                            KeyboardKeys.CAMPUS.value
-                        ],
-                        KeyboardKeys.YEAR.value: callBackData[KeyboardKeys.YEAR.value],
+                        **callBackData,
+                        KeyboardKeys.MENU.value: MenuKeys.PERSONAL_INFO.value,
                     }
                 ),
             ),
@@ -166,15 +137,7 @@ def SCORE_KEYBOARD(callBackData: dict):
                     score,
                     callback_data=compressCallBackData(
                         {
-                            KeyboardKeys.GUILD.value: callBackData[
-                                KeyboardKeys.GUILD.value
-                            ],
-                            KeyboardKeys.CAMPUS.value: callBackData[
-                                KeyboardKeys.CAMPUS.value
-                            ],
-                            KeyboardKeys.YEAR.value: callBackData[
-                                KeyboardKeys.YEAR.value
-                            ],
+                            **callBackData,
                             KeyboardKeys.NEW_SCORE.value: score,
                         }
                     ),
@@ -182,65 +145,101 @@ def SCORE_KEYBOARD(callBackData: dict):
                 for score in range(0, 11)
             ],
             3,
-        )
-    )
-    # Add buttons to go to guild select (campus first) and year select
-    scoreButtons.append(
-        [
-            InlineKeyboardButton(
-                "Select guild",
-                callback_data=compressCallBackData(
-                    {
-                        KeyboardKeys.GUILD.value: callBackData[
-                            KeyboardKeys.GUILD.value
-                        ],
-                        KeyboardKeys.CAMPUS.value: callBackData[
-                            KeyboardKeys.CAMPUS.value
-                        ],
-                        KeyboardKeys.YEAR.value: callBackData[KeyboardKeys.YEAR.value],
-                        KeyboardKeys.MENU.value: MenuKeys.CAMPUS.value,
-                    }
-                ),
-            )
-        ],
-    )
-    scoreButtons.append(
-        [
-            InlineKeyboardButton(
-                "Select fuksi year",
-                callback_data=compressCallBackData(
-                    {
-                        KeyboardKeys.GUILD.value: callBackData[
-                            KeyboardKeys.GUILD.value
-                        ],
-                        KeyboardKeys.CAMPUS.value: callBackData[
-                            KeyboardKeys.CAMPUS.value
-                        ],
-                        KeyboardKeys.YEAR.value: callBackData[KeyboardKeys.YEAR.value],
-                        KeyboardKeys.MENU.value: MenuKeys.YEAR.value,
-                    }
-                ),
-            ),
-        ],
-    )
-    scoreButtons.append(
-        [
-            InlineKeyboardButton(
-                "Results",
-                callback_data=compressCallBackData(
-                    {
-                        KeyboardKeys.GUILD.value: callBackData[
-                            KeyboardKeys.GUILD.value
-                        ],
-                        KeyboardKeys.CAMPUS.value: callBackData[
-                            KeyboardKeys.CAMPUS.value
-                        ],
-                        KeyboardKeys.YEAR.value: callBackData[KeyboardKeys.YEAR.value],
-                        KeyboardKeys.MENU.value: MenuKeys.RESULTS.value,
-                    }
-                ),
-            ),
-        ],
+        ),
     )
 
+    scoreButtons.append(
+        [
+                    InlineKeyboardButton(
+            "Back",
+            callback_data=compressCallBackData(
+                {
+                    **callBackData,
+                }
+            ),
+        ),
+        ]
+    )
     return InlineKeyboardMarkup(scoreButtons)
+
+def MAIN_MENU_KEYBOARD(callBackData: dict):
+    mainMenuButtons = list(
+        chunks(
+            [
+                InlineKeyboardButton(
+                    "Enter score",
+                    callback_data=compressCallBackData(
+                        {
+                            **callBackData,
+                            KeyboardKeys.MENU.value: MenuKeys.SCORE.value,
+                        }
+                    ),
+                ),
+                InlineKeyboardButton(
+                    "Personal info",
+                    callback_data=compressCallBackData(
+                        {
+                            **callBackData,
+                            KeyboardKeys.MENU.value: MenuKeys.PERSONAL_INFO.value,
+                        }
+                    ),
+                ),
+                InlineKeyboardButton(
+                    "Results",
+                    callback_data=compressCallBackData(
+                        {
+                            **callBackData,
+                            KeyboardKeys.MENU.value: MenuKeys.RESULTS.value,
+                        }
+                    ),
+                ),
+            ],
+            1,
+        )
+    )
+    return InlineKeyboardMarkup(mainMenuButtons)
+
+def PERSONAL_INFO_KEYBOARD(callBackData: dict):
+    personalInfoButtons = list(
+        chunks(
+            [
+                InlineKeyboardButton(
+                    "Select campus",
+                    callback_data=compressCallBackData(
+                        {
+                            **callBackData,
+                            KeyboardKeys.MENU.value: MenuKeys.CAMPUS.value,
+                        }
+                    ),
+                ),
+                InlineKeyboardButton(
+                    "Select guild",
+                    callback_data=compressCallBackData(
+                        {
+                            **callBackData,
+                            KeyboardKeys.MENU.value: MenuKeys.GUILD.value,
+                        }
+                    ),
+                ),
+                InlineKeyboardButton(
+                    "Select fuksi year",
+                    callback_data=compressCallBackData(
+                        {
+                            **callBackData,
+                            KeyboardKeys.MENU.value: MenuKeys.YEAR.value,
+                        }
+                    ),
+                ),
+                InlineKeyboardButton(
+                    "Back",
+                    callback_data=compressCallBackData(
+                        {
+                            **callBackData,
+                        }
+                    ),
+                ),
+              ],
+            1,
+        )
+    )
+    return InlineKeyboardMarkup(personalInfoButtons)

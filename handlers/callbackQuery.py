@@ -7,6 +7,8 @@ from database.database import getAverage, putItem, saveUserInfo
 from keyboards import (
     ASSOCIATION_KEYBOARD,
     CAMPUS_KEYBOARD,
+    MAIN_MENU_KEYBOARD,
+    PERSONAL_INFO_KEYBOARD,
     SCORE_KEYBOARD,
     YEAR_KEYBOARD,
 )
@@ -59,7 +61,7 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
                 year,
                 score,
             ),
-            reply_markup=SCORE_KEYBOARD(
+            reply_markup=MAIN_MENU_KEYBOARD(
                 {
                     KeyboardKeys.GUILD.value: guild,
                     KeyboardKeys.CAMPUS.value: campus,
@@ -121,6 +123,34 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
 
         await query.edit_message_text(
             text=RESULTS_MESSAGE.format(str(average).replace(".", ",")),
+            reply_markup=MAIN_MENU_KEYBOARD(
+                {
+                    KeyboardKeys.GUILD.value: guild,
+                    KeyboardKeys.CAMPUS.value: campus,
+                    KeyboardKeys.YEAR.value: year,
+                    KeyboardKeys.SCORE.value: newScore,
+                    KeyboardKeys.TIMESTAMP.value: timestamp,
+                }
+            ),
+            parse_mode=constants.ParseMode.MARKDOWN_V2,
+        )
+    elif menu == MenuKeys.PERSONAL_INFO.value:
+        await query.edit_message_text(
+            text=PERSONAL_INFO,
+            reply_markup=PERSONAL_INFO_KEYBOARD(
+                {
+                    KeyboardKeys.GUILD.value: guild,
+                    KeyboardKeys.CAMPUS.value: campus,
+                    KeyboardKeys.YEAR.value: year,
+                    KeyboardKeys.SCORE.value: newScore,
+                    KeyboardKeys.TIMESTAMP.value: timestamp,
+                }
+            ),
+            parse_mode=constants.ParseMode.MARKDOWN_V2,
+        )
+    elif menu == MenuKeys.SCORE.value:
+        await query.edit_message_text(
+            text=SCORE_MESSAGE,
             reply_markup=SCORE_KEYBOARD(
                 {
                     KeyboardKeys.GUILD.value: guild,

@@ -70,7 +70,6 @@ class KeyboardKeys(Enum):
     TIMESTAMP = "6"
     NEW_SCORE = "7"
     MENU = "8"
-    RESULTS = "9"
 
 
 
@@ -79,6 +78,8 @@ class MenuKeys(Enum):
     GUILD = "2"
     YEAR = "3"
     RESULTS = "4"
+    PERSONAL_INFO = "5"
+    SCORE = "6"
 
 
 Vuodet = [
