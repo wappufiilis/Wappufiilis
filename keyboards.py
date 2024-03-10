@@ -23,8 +23,8 @@ def CAMPUS_KEYBOARD(callBackData: dict):
                     campus.name.lower().capitalize(),
                     callback_data=compressCallBackData(
                         {
-                                **callBackData,
-                                KeyboardKeys.CAMPUS.value: campus.value,
+                            **callBackData,
+                            KeyboardKeys.CAMPUS.value: campus.value,
                             KeyboardKeys.MENU.value: MenuKeys.GUILD.value,
                         }
                     ),
@@ -150,17 +150,18 @@ def SCORE_KEYBOARD(callBackData: dict):
 
     scoreButtons.append(
         [
-                    InlineKeyboardButton(
-            "Back",
-            callback_data=compressCallBackData(
-                {
-                    **callBackData,
-                }
+            InlineKeyboardButton(
+                "Back",
+                callback_data=compressCallBackData(
+                    {
+                        **callBackData,
+                    }
+                ),
             ),
-        ),
         ]
     )
     return InlineKeyboardMarkup(scoreButtons)
+
 
 def MAIN_MENU_KEYBOARD(callBackData: dict):
     mainMenuButtons = list(
@@ -193,11 +194,21 @@ def MAIN_MENU_KEYBOARD(callBackData: dict):
                         }
                     ),
                 ),
+                InlineKeyboardButton(
+                    "Graph",
+                    callback_data=compressCallBackData(
+                        {
+                            **callBackData,
+                            KeyboardKeys.MENU.value: MenuKeys.GRAPH.value,
+                        }
+                    ),
+                ),
             ],
             1,
         )
     )
     return InlineKeyboardMarkup(mainMenuButtons)
+
 
 def PERSONAL_INFO_KEYBOARD(callBackData: dict):
     personalInfoButtons = list(
@@ -238,7 +249,26 @@ def PERSONAL_INFO_KEYBOARD(callBackData: dict):
                         }
                     ),
                 ),
-              ],
+            ],
+            1,
+        )
+    )
+    return InlineKeyboardMarkup(personalInfoButtons)
+
+
+def GRAPH_KEYBOARD(callBackData: dict):
+    personalInfoButtons = list(
+        chunks(
+            [
+                InlineKeyboardButton(
+                    "Back",
+                    callback_data=compressCallBackData(
+                        {
+                            **callBackData,
+                        }
+                    ),
+                ),
+            ],
             1,
         )
     )

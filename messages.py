@@ -21,3 +21,5 @@ RESULTS_MESSAGE = """Here is the average wappufiilis for today: {}/10\."""
 PERSONAL_INFO = """Adjust your user information here\."""
 
 SCORE_MESSAGE = """Enter your wappufiilis for today\."""
+
+GRAPH_MESSAGE = """Here is the graph of wappufiilis\."""

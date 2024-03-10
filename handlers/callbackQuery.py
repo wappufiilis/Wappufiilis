@@ -1,4 +1,5 @@
 import datetime
+
 from telegram import Update, constants
 from telegram.ext import ContextTypes
 from telegram.helpers import escape_markdown
@@ -152,6 +153,21 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
         await query.edit_message_text(
             text=SCORE_MESSAGE,
             reply_markup=SCORE_KEYBOARD(
+                {
+                    KeyboardKeys.GUILD.value: guild,
+                    KeyboardKeys.CAMPUS.value: campus,
+                    KeyboardKeys.YEAR.value: year,
+                    KeyboardKeys.SCORE.value: newScore,
+                    KeyboardKeys.TIMESTAMP.value: timestamp,
+                }
+            ),
+            parse_mode=constants.ParseMode.MARKDOWN_V2,
+        )
+    elif menu == MenuKeys.GRAPH.value:
+        await query.message.reply_photo(
+            photo="https://wappufiilisweb.vercel.app/kappura",
+            caption=GRAPH_MESSAGE,
+            reply_markup=MAIN_MENU_KEYBOARD(
                 {
                     KeyboardKeys.GUILD.value: guild,
                     KeyboardKeys.CAMPUS.value: campus,

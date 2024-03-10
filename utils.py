@@ -72,7 +72,6 @@ class KeyboardKeys(Enum):
     MENU = "8"
 
 
-
 class MenuKeys(Enum):
     CAMPUS = "1"
     GUILD = "2"
@@ -80,6 +79,7 @@ class MenuKeys(Enum):
     RESULTS = "4"
     PERSONAL_INFO = "5"
     SCORE = "6"
+    GRAPH = "7"
 
 
 Vuodet = [
