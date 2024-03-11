@@ -58,3 +58,4 @@ async def results(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         parse_mode=constants.ParseMode.MARKDOWN_V2,
     )
     return -1
+
