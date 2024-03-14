@@ -13,7 +13,8 @@ jobs:
   deploy_infrastructure:
     name: Deploy Bot Infrastructure
     runs-on: ubuntu-latest
-    environment: ${{ env.environment }}
+    environment:
+      name: ${{ env.environment }}
     defaults:
       run:
         working-directory: .
