@@ -1,6 +1,6 @@
 import datetime
 
-from telegram import Update, constants
+from telegram import InputMediaPhoto, Update, constants
 from telegram.ext import ContextTypes
 from telegram.helpers import escape_markdown
 
@@ -53,128 +53,186 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
             year=year,
         )
     if not menu:
-        print("geototo", score)
-        # Update the score
-        await query.edit_message_text(
-            text=BASE_MESSAGE.format(
+        keyboard = MAIN_MENU_KEYBOARD(
+            {
+                KeyboardKeys.GUILD.value: guild,
+                KeyboardKeys.CAMPUS.value: campus,
+                KeyboardKeys.YEAR.value: year,
+                KeyboardKeys.SCORE.value: newScore,
+                KeyboardKeys.TIMESTAMP.value: timestamp,
+            }
+        )
+        await query.edit_message_media(
+            media=InputMediaPhoto(
+                media="https://wappufiilisweb.vercel.app/welcome.webp"
+            ),
+            reply_markup=keyboard,
+        )
+        await query.edit_message_caption(
+            caption=BASE_MESSAGE.format(
                 escape_markdown(query.from_user.first_name),
                 guild,
                 year,
                 score,
             ),
-            reply_markup=MAIN_MENU_KEYBOARD(
-                {
-                    KeyboardKeys.GUILD.value: guild,
-                    KeyboardKeys.CAMPUS.value: campus,
-                    KeyboardKeys.YEAR.value: year,
-                    KeyboardKeys.SCORE.value: newScore,
-                    KeyboardKeys.TIMESTAMP.value: timestamp,
-                }
-            ),
             parse_mode=constants.ParseMode.MARKDOWN_V2,
+            reply_markup=keyboard,
         )
+
     elif menu == MenuKeys.CAMPUS.value:
-        await query.edit_message_text(
-            text=CAMPUS_SELECT,
-            reply_markup=CAMPUS_KEYBOARD(
-                {
-                    KeyboardKeys.GUILD.value: guild,
-                    KeyboardKeys.CAMPUS.value: campus,
-                    KeyboardKeys.YEAR.value: year,
-                    KeyboardKeys.SCORE.value: newScore,
-                    KeyboardKeys.TIMESTAMP.value: timestamp,
-                }
+        keyboard = CAMPUS_KEYBOARD(
+            {
+                KeyboardKeys.GUILD.value: guild,
+                KeyboardKeys.CAMPUS.value: campus,
+                KeyboardKeys.YEAR.value: year,
+                KeyboardKeys.SCORE.value: newScore,
+                KeyboardKeys.TIMESTAMP.value: timestamp,
+            }
+        )
+        await query.edit_message_media(
+            media=InputMediaPhoto(
+                media="https://wappufiilisweb.vercel.app/welcome.webp"
             ),
+            reply_markup=keyboard,
+        )
+        await query.edit_message_caption(
+            caption=CAMPUS_SELECT,
             parse_mode=constants.ParseMode.MARKDOWN_V2,
+            reply_markup=keyboard,
         )
     elif menu == MenuKeys.GUILD.value:
-        await query.edit_message_text(
-            text=SELECT_GUILD.format(
+        keyboard = ASSOCIATION_KEYBOARD(
+            {
+                KeyboardKeys.GUILD.value: guild,
+                KeyboardKeys.CAMPUS.value: campus,
+                KeyboardKeys.YEAR.value: year,
+                KeyboardKeys.SCORE.value: newScore,
+                KeyboardKeys.TIMESTAMP.value: timestamp,
+            }
+        )
+        await query.edit_message_media(
+            media=InputMediaPhoto(
+                media="https://wappufiilisweb.vercel.app/welcome.webp"
+            ),
+            reply_markup=keyboard,
+        )
+        await query.edit_message_caption(
+            caption=SELECT_GUILD.format(
                 Kampus(campus).name.lower().capitalize(),
             ),
-            reply_markup=ASSOCIATION_KEYBOARD(
-                {
-                    KeyboardKeys.GUILD.value: guild,
-                    KeyboardKeys.CAMPUS.value: campus,
-                    KeyboardKeys.YEAR.value: year,
-                    KeyboardKeys.SCORE.value: newScore,
-                    KeyboardKeys.TIMESTAMP.value: timestamp,
-                }
-            ),
             parse_mode=constants.ParseMode.MARKDOWN_V2,
+            reply_markup=keyboard,
         )
     elif menu == MenuKeys.YEAR.value:
-        await query.edit_message_text(
-            text=SELECT_YEAR if not guild else SELECT_YEAR_GUILD.format(guild),
-            reply_markup=YEAR_KEYBOARD(
-                {
-                    KeyboardKeys.GUILD.value: guild,
-                    KeyboardKeys.CAMPUS.value: campus,
-                    KeyboardKeys.YEAR.value: year,
-                    KeyboardKeys.SCORE.value: newScore,
-                    KeyboardKeys.TIMESTAMP.value: timestamp,
-                }
-            ),
-            parse_mode=constants.ParseMode.MARKDOWN_V2,
+        keyboard = YEAR_KEYBOARD(
+            {
+                KeyboardKeys.GUILD.value: guild,
+                KeyboardKeys.CAMPUS.value: campus,
+                KeyboardKeys.YEAR.value: year,
+                KeyboardKeys.SCORE.value: newScore,
+                KeyboardKeys.TIMESTAMP.value: timestamp,
+            }
         )
+        await query.edit_message_media(
+            media=InputMediaPhoto(
+                media="https://wappufiilisweb.vercel.app/welcome.webp"
+            ),
+            reply_markup=keyboard,
+        )
+        await query.edit_message_caption(
+            caption=SELECT_YEAR if not guild else SELECT_YEAR_GUILD.format(guild),
+            parse_mode=constants.ParseMode.MARKDOWN_V2,
+            reply_markup=keyboard,
+        )
+
     elif menu == MenuKeys.RESULTS.value:
         # Convert timestamp to format YYYY-MM-DD
         day = datetime.datetime.now().strftime("%Y-%m-%d")
         average = getAverage(day=day, guild=guild)
+        keyboard = MAIN_MENU_KEYBOARD(
+            {
+                KeyboardKeys.GUILD.value: guild,
+                KeyboardKeys.CAMPUS.value: campus,
+                KeyboardKeys.YEAR.value: year,
+                KeyboardKeys.SCORE.value: newScore,
+                KeyboardKeys.TIMESTAMP.value: timestamp,
+            }
+        )
+        await query.edit_message_media(
+            media=InputMediaPhoto(
+                media="https://wappufiilisweb.vercel.app/welcome.webp"
+            ),
+            reply_markup=keyboard,
+        )
+        await query.edit_message_caption(
+            caption=RESULTS_MESSAGE.format(
+                str(average).replace(".", ","),
+                parse_mode=constants.ParseMode.MARKDOWN_V2,
+            ),
+            parse_mode=constants.ParseMode.MARKDOWN_V2,
+            reply_markup=keyboard,
+        )
 
-        await query.edit_message_text(
-            text=RESULTS_MESSAGE.format(str(average).replace(".", ",")),
-            reply_markup=MAIN_MENU_KEYBOARD(
-                {
-                    KeyboardKeys.GUILD.value: guild,
-                    KeyboardKeys.CAMPUS.value: campus,
-                    KeyboardKeys.YEAR.value: year,
-                    KeyboardKeys.SCORE.value: newScore,
-                    KeyboardKeys.TIMESTAMP.value: timestamp,
-                }
-            ),
-            parse_mode=constants.ParseMode.MARKDOWN_V2,
-        )
     elif menu == MenuKeys.PERSONAL_INFO.value:
-        await query.edit_message_text(
-            text=PERSONAL_INFO,
-            reply_markup=PERSONAL_INFO_KEYBOARD(
-                {
-                    KeyboardKeys.GUILD.value: guild,
-                    KeyboardKeys.CAMPUS.value: campus,
-                    KeyboardKeys.YEAR.value: year,
-                    KeyboardKeys.SCORE.value: newScore,
-                    KeyboardKeys.TIMESTAMP.value: timestamp,
-                }
-            ),
-            parse_mode=constants.ParseMode.MARKDOWN_V2,
+        keyboard = PERSONAL_INFO_KEYBOARD(
+            {
+                KeyboardKeys.GUILD.value: guild,
+                KeyboardKeys.CAMPUS.value: campus,
+                KeyboardKeys.YEAR.value: year,
+                KeyboardKeys.SCORE.value: newScore,
+                KeyboardKeys.TIMESTAMP.value: timestamp,
+            }
         )
+        await query.edit_message_media(
+            media=InputMediaPhoto(
+                media="https://wappufiilisweb.vercel.app/welcome.webp"
+            ),
+            reply_markup=keyboard,
+        )
+        await query.edit_message_caption(
+            caption=PERSONAL_INFO,
+            parse_mode=constants.ParseMode.MARKDOWN_V2,
+            reply_markup=keyboard,
+        )
+
     elif menu == MenuKeys.SCORE.value:
-        await query.edit_message_text(
-            text=SCORE_MESSAGE,
-            reply_markup=SCORE_KEYBOARD(
-                {
-                    KeyboardKeys.GUILD.value: guild,
-                    KeyboardKeys.CAMPUS.value: campus,
-                    KeyboardKeys.YEAR.value: year,
-                    KeyboardKeys.SCORE.value: newScore,
-                    KeyboardKeys.TIMESTAMP.value: timestamp,
-                }
-            ),
-            parse_mode=constants.ParseMode.MARKDOWN_V2,
+        keyboard = SCORE_KEYBOARD(
+            {
+                KeyboardKeys.GUILD.value: guild,
+                KeyboardKeys.CAMPUS.value: campus,
+                KeyboardKeys.YEAR.value: year,
+                KeyboardKeys.SCORE.value: newScore,
+                KeyboardKeys.TIMESTAMP.value: timestamp,
+            }
         )
-    elif menu == MenuKeys.GRAPH.value:
-        await query.message.reply_photo(
-            photo="https://wappufiilisweb.vercel.app/kappura",
-            caption=GRAPH_MESSAGE,
-            reply_markup=MAIN_MENU_KEYBOARD(
-                {
-                    KeyboardKeys.GUILD.value: guild,
-                    KeyboardKeys.CAMPUS.value: campus,
-                    KeyboardKeys.YEAR.value: year,
-                    KeyboardKeys.SCORE.value: newScore,
-                    KeyboardKeys.TIMESTAMP.value: timestamp,
-                }
+        await query.edit_message_media(
+            media=InputMediaPhoto(
+                media="https://wappufiilisweb.vercel.app/welcome.webp"
             ),
+            reply_markup=keyboard,
+        )
+        await query.edit_message_caption(
+            caption=SCORE_MESSAGE,
             parse_mode=constants.ParseMode.MARKDOWN_V2,
+            reply_markup=keyboard,
+        )
+
+    elif menu == MenuKeys.GRAPH.value:
+        keyboard = MAIN_MENU_KEYBOARD(
+            {
+                KeyboardKeys.GUILD.value: guild,
+                KeyboardKeys.CAMPUS.value: campus,
+                KeyboardKeys.YEAR.value: year,
+                KeyboardKeys.SCORE.value: newScore,
+                KeyboardKeys.TIMESTAMP.value: timestamp,
+            }
+        )
+        await query.edit_message_media(
+            media=InputMediaPhoto(media="https://wappufiilisweb.vercel.app/kappura"),
+            reply_markup=keyboard,
+        )
+        await query.edit_message_caption(
+            caption=GRAPH_MESSAGE,
+            parse_mode=constants.ParseMode.MARKDOWN_V2,
+            reply_markup=keyboard,
         )
