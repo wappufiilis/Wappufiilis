@@ -223,15 +223,15 @@ def PERSONAL_INFO_KEYBOARD(callBackData: dict):
                         }
                     ),
                 ),
-                InlineKeyboardButton(
-                    "Select guild",
-                    callback_data=compressCallBackData(
-                        {
-                            **callBackData,
-                            KeyboardKeys.MENU.value: MenuKeys.GUILD.value,
-                        }
-                    ),
-                ),
+                # InlineKeyboardButton(
+                #    "Select guild",
+                #    callback_data=compressCallBackData(
+                #        {
+                #            **callBackData,
+                #            KeyboardKeys.MENU.value: MenuKeys.GUILD.value,
+                #        }
+                #    ),
+                # ),
                 InlineKeyboardButton(
                     "Select fuksi year",
                     callback_data=compressCallBackData(

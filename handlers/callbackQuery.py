@@ -112,7 +112,7 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
         )
         await query.edit_message_media(
             media=InputMediaPhoto(
-                media="https://wappufiilisweb.vercel.app/welcome.webp"
+                media="https://wappufiilisweb.vercel.app/guild_select.webp"
             ),
             reply_markup=keyboard,
         )
@@ -135,7 +135,7 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
         )
         await query.edit_message_media(
             media=InputMediaPhoto(
-                media="https://wappufiilisweb.vercel.app/welcome.webp"
+                media="https://wappufiilisweb.vercel.app/fucks_year.webp"
             ),
             reply_markup=keyboard,
         )
@@ -144,7 +144,6 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
             parse_mode=constants.ParseMode.MARKDOWN_V2,
             reply_markup=keyboard,
         )
-
     elif menu == MenuKeys.RESULTS.value:
         # Convert timestamp to format YYYY-MM-DD
         day = datetime.datetime.now().strftime("%Y-%m-%d")
@@ -172,7 +171,6 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
             parse_mode=constants.ParseMode.MARKDOWN_V2,
             reply_markup=keyboard,
         )
-
     elif menu == MenuKeys.PERSONAL_INFO.value:
         keyboard = PERSONAL_INFO_KEYBOARD(
             {
@@ -185,7 +183,7 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
         )
         await query.edit_message_media(
             media=InputMediaPhoto(
-                media="https://wappufiilisweb.vercel.app/welcome.webp"
+                media="https://wappufiilisweb.vercel.app/personal_info.webp"
             ),
             reply_markup=keyboard,
         )
@@ -194,7 +192,6 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
             parse_mode=constants.ParseMode.MARKDOWN_V2,
             reply_markup=keyboard,
         )
-
     elif menu == MenuKeys.SCORE.value:
         keyboard = SCORE_KEYBOARD(
             {
@@ -207,7 +204,7 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
         )
         await query.edit_message_media(
             media=InputMediaPhoto(
-                media="https://wappufiilisweb.vercel.app/welcome.webp"
+                media="https://wappufiilisweb.vercel.app/measure.webp"
             ),
             reply_markup=keyboard,
         )
@@ -216,7 +213,6 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
             parse_mode=constants.ParseMode.MARKDOWN_V2,
             reply_markup=keyboard,
         )
-
     elif menu == MenuKeys.GRAPH.value:
         keyboard = MAIN_MENU_KEYBOARD(
             {
@@ -228,7 +224,9 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
             }
         )
         await query.edit_message_media(
-            media=InputMediaPhoto(media="https://wappufiilisweb.vercel.app/kappura"),
+            media=InputMediaPhoto(
+                media=f"https://wappufiilisweb.vercel.app/kappura/{timestamp}"
+            ),
             reply_markup=keyboard,
         )
         await query.edit_message_caption(
