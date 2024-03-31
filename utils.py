@@ -14,7 +14,6 @@ def userToCallbackData(user: dict):
     dataString = (
         f"campus::{user['campus']}::guild::{user['guild']}::year::{user['year']}"
     )
-    print("data string is", dataString)
     return json.dumps(user)
 
 
@@ -35,7 +34,6 @@ def compressCallBackData(data: dict):
     csv_str = csv.encode("utf-8")
     compressed = gzip.compress(csv_str)
     encoded = base64.b64encode(compressed).decode("utf-8")
-    # print(data, "encoded is", encoded, len(encoded), "decoded is", decompressCallBackData(encoded))
     return encoded
 
 
@@ -70,6 +68,7 @@ class KeyboardKeys(Enum):
     TIMESTAMP = "6"
     NEW_SCORE = "7"
     MENU = "8"
+    PAGINATION = "9"
 
 
 class MenuKeys(Enum):
@@ -116,22 +115,26 @@ class Kampus(Enum):
 
 Killat = {
     Kampus.AALTO.value: [
-        "SIK",
         "AK",
         "AS",
         "Athene",
         "DG",
         "FK",
+        "IK",
         "Inkubio",
         "KIK",
+        "KK",
         "MK",
         "Prodeko",
         "PJK",
-        "IK",
+        "SIK",
         "TiK",
         "VK",
-        "KK",
         "TF",
+        "KY",
+        "DADA",
+        "NuDe",
+        "Kooma",
     ],
     Kampus.LUT.value: [
         "Armatuuri",
@@ -150,7 +153,7 @@ Killat = {
         "OTiT",
         "Prose",
         "SIK",
-        "YMP",  # Ympäristörakentajakilta
+        "YMP",
         "OLTO",
     ],
     Kampus.TAMPERE.value: [
@@ -172,11 +175,11 @@ Killat = {
     Kampus.TURKU.value: [
         "Adamas",
         "Asklepio",
+        "DaTe",
         "Digit",
         "Machina",
         "Nucleus",
         "Kemistklubben",
-        "DaTe",
     ],
     Kampus.VAASA.value: ["Tutti ry"],
     Kampus.JYVÄSKYLÄ.value: [

@@ -66,7 +66,6 @@ def getUserInfo(user_id: str) -> dict:
     try:
         response = table.get_item(Key={"user_id": str(user_id)})
     except Exception as e:
-        print(";D", e)
         return None
     if "Item" in response:
         return response["Item"]
