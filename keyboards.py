@@ -215,7 +215,7 @@ def PERSONAL_INFO_KEYBOARD(callBackData: dict):
         chunks(
             [
                 InlineKeyboardButton(
-                    f"Select campus and guild (Current: {callBackData.get(KeyboardKeys.CAMPUS.value, 'None')}, {callBackData.get(KeyboardKeys.GUILD.value, 'None')})",
+                    f"Select campus and guild (Current: {Kampus(callBackData.get(KeyboardKeys.CAMPUS.value, 'None')).name}, {callBackData.get(KeyboardKeys.GUILD.value, 'None')})",
                     callback_data=compressCallBackData(
                         {
                             **callBackData,
@@ -272,7 +272,7 @@ def GRAPH_KEYBOARD(callBackData: dict):
                 ]
                 + [
                     InlineKeyboardButton(
-                        f"Graph for Your Campus {callBackData.get(KeyboardKeys.CAMPUS.value, 'None')}",
+                        f"Graph for Your Campus {Kampus(callBackData.get(KeyboardKeys.CAMPUS.value).name, 'None')}",
                         callback_data=compressCallBackData(
                             {
                                 **callBackData,
