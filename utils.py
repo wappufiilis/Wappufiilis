@@ -141,15 +141,14 @@ Killat = {
         "Sätky",
     ],
     Kampus.OULU.value: [
-        "Armatuuri",
-        "Cluster",
-        "OPTIEM",
         "Arkkitehtikilta",
-        "Konekilta",
-        "Prosessikilta",
+        "Kone",
+        "OPTIEM",
         "OTiT",
-        "YMP",  # Ympäristörakentajakilta
+        "Prose",
         "SIK",
+        "YMP",  # Ympäristörakentajakilta
+        "OLTO",
     ],
     Kampus.TAMPERE.value: [
         "Arkkitehtikilta",

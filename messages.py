@@ -1,8 +1,4 @@
 BASE_MESSAGE = """Hi {}, track you wappufiilis with me\!
-
-Your Guild: {}
-Your Year: {}
-Your Last Wappufiilis: {}/10
 """
 
 CAMPUS_SELECT = """Please select your campus\."""
