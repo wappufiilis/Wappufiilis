@@ -75,10 +75,11 @@ def getUserInfo(user_id: str) -> dict:
 
 
 def putItem(user_id, year, guild, campus, score):
-    table = dynamodb.Table(os.getenv("DYNAMODB_EVENTS_TABLE_NAME"))
     timestamp = int(datetime.now().timestamp())
     datestring = datetime.fromtimestamp(timestamp).strftime("%Y-%m-%d")
-    table.put_item(
+
+    perUserTable = dynamodb.Table(os.getenv("DYNAMODB_EVENTS_TABLE_NAME"))
+    perUserTable.put_item(
         Item={
             "partition_key": f"{user_id}::{datestring}",
             "year": year,
@@ -88,6 +89,33 @@ def putItem(user_id, year, guild, campus, score):
             "timestamp": timestamp,
         }
     )
+
+    if guild is not None and campus is not None:
+        perGuildTable = dynamodb.Table(
+            os.getenv("DYNAMODB_EVENTS_PER_GUILD_TABLE_NAME")
+        )
+        perGuildTable.put_item(
+            Item={
+                "partition_key": f"{campus}::{guild}::{year}::{user_id}::{datestring}",
+                "year": year,
+                "campus": campus,
+                "score": score,
+                "timestamp": timestamp,
+                "user_id": user_id,
+            }
+        )
+    if year is not None:
+        perYearTable = dynamodb.Table(os.getenv("DYNAMODB_EVENTS_PER_YEAR_TABLE_NAME"))
+        perYearTable.put_item(
+            Item={
+                "partition_key": f"{year}::{campus}::{guild}::{user_id}::{datestring}",
+                "year": year,
+                "campus": campus,
+                "score": score,
+                "timestamp": timestamp,
+                "user_id": user_id,
+            }
+        )
 
 
 def getDayAverage(day: str) -> float:
