@@ -90,14 +90,12 @@ def putItem(user_id, year, guild, campus, score):
     )
 
 
-def getAverage(day: str, guild: str = None) -> float:
+def getDayAverage(day: str) -> float:
     """
     Get averege fiilis for the day (based on the timestamp)
-    If guild is specified, get the average for the guild
 
     params:
     day: str - date in format "YYYY-MM-DD"
-    guild: str - guild name
     """
     start_of_day = int(
         datetime.strptime(day, "%Y-%m-%d")
@@ -111,23 +109,14 @@ def getAverage(day: str, guild: str = None) -> float:
     )
 
     table = dynamodb.Table(os.getenv("DYNAMODB_EVENTS_TABLE_NAME"))
-    if False and guild:
-        response = table.query(
-            IndexName="guild-index",
-            KeyConditionExpression="guild = :g",
-            FilterExpression="begins_with(partition_key, :p)",
-            ExpressionAttributeValues={
-                ":g": guild,
-                ":p": day,
-            },
+
+    # Use sort index "timestamp" to get all items for the day
+    response = table.scan(
+        FilterExpression=boto3.dynamodb.conditions.Attr("timestamp").between(
+            start_of_day, end_of_day
         )
-    else:
-        # Use sort index "timestamp" to get all items for the day
-        response = table.scan(
-            FilterExpression=boto3.dynamodb.conditions.Attr("timestamp").between(
-                start_of_day, end_of_day
-            )
-        )
+    )
+
     items = response["Items"]
     if items:
         return sum([int(item["score"]) for item in items]) / len(items)

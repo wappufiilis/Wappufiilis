@@ -4,7 +4,7 @@ from telegram import InputMediaPhoto, Update, constants
 from telegram.ext import ContextTypes
 from telegram.helpers import escape_markdown
 
-from database.database import getAverage, putItem, saveUserInfo
+from database.database import getDayAverage, putItem, saveUserInfo
 from keyboards import (
     ASSOCIATION_KEYBOARD,
     CAMPUS_KEYBOARD,
@@ -148,7 +148,7 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     elif menu == MenuKeys.RESULTS.value:
         # Convert timestamp to format YYYY-MM-DD
         day = datetime.datetime.now().strftime("%Y-%m-%d")
-        average = getAverage(day=day, guild=guild)
+        average = getDayAverage(day=day)
         keyboard = MAIN_MENU_KEYBOARD(
             {
                 KeyboardKeys.GUILD.value: guild,
