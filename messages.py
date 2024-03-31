@@ -12,10 +12,15 @@ SELECT_YEAR = """Please tell me your fuksi year\."""
 
 SELECT_YEAR_GUILD = """Please tell me your fuksi year in {}\."""
 
-RESULTS_MESSAGE = """Here is the average wappufiilis for today: {}/10\."""
+RESULTS_MESSAGE = """Overall average wappufiilis for today: {}/10
+Your guild's average wappufiilis for today: {}/10"""
 
 PERSONAL_INFO = """Adjust your user information here\."""
 
 SCORE_MESSAGE = """Enter your wappufiilis for today\."""
 
-GRAPH_MESSAGE = """Here is the graph of wappufiilis\."""
+GRAPH_MESSAGE = """Here is the graph of wappufiilis for all participants\."""
+
+GRAPH_MESSAGE_CAMPUS = (
+    """Here is the graph of wappufiilis for all participants in {}\."""
+)

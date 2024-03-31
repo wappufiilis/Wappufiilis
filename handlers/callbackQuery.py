@@ -4,10 +4,11 @@ from telegram import InputMediaPhoto, Update, constants
 from telegram.ext import ContextTypes
 from telegram.helpers import escape_markdown
 
-from database.database import getDayAverage, putItem, saveUserInfo
+from database.database import getDayAverage, getGuildDayAverage, putItem, saveUserInfo
 from keyboards import (
     ASSOCIATION_KEYBOARD,
     CAMPUS_KEYBOARD,
+    GRAPH_KEYBOARD,
     MAIN_MENU_KEYBOARD,
     PERSONAL_INFO_KEYBOARD,
     SCORE_KEYBOARD,
@@ -211,7 +212,7 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
             reply_markup=keyboard,
         )
     elif menu == MenuKeys.GRAPH.value:
-        keyboard = MAIN_MENU_KEYBOARD(
+        keyboard = GRAPH_KEYBOARD(
             {
                 KeyboardKeys.GUILD.value: guild,
                 KeyboardKeys.CAMPUS.value: campus,
@@ -228,6 +229,30 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
         )
         await query.edit_message_caption(
             caption=GRAPH_MESSAGE,
+            parse_mode=constants.ParseMode.MARKDOWN_V2,
+            reply_markup=keyboard,
+        )
+    elif menu == MenuKeys.GRAPH_CAMPUS.value:
+        keyboard = GRAPH_KEYBOARD(
+            {
+                KeyboardKeys.GUILD.value: guild,
+                KeyboardKeys.CAMPUS.value: campus,
+                KeyboardKeys.YEAR.value: year,
+                KeyboardKeys.SCORE.value: newScore,
+                KeyboardKeys.TIMESTAMP.value: timestamp,
+            }
+        )
+        current_hour = datetime.datetime.now().strftime("%Y-%m-%d-%H")
+        image_url = (
+            f"https://wappufiilisweb.vercel.app/kappura/{current_hour}/campus/{campus}"
+        )
+        print(image_url)
+        await query.edit_message_media(
+            media=InputMediaPhoto(media=image_url),
+            reply_markup=keyboard,
+        )
+        await query.edit_message_caption(
+            caption=GRAPH_MESSAGE_CAMPUS.format(Kampus(campus).name),
             parse_mode=constants.ParseMode.MARKDOWN_V2,
             reply_markup=keyboard,
         )

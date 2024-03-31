@@ -80,6 +80,7 @@ class MenuKeys(Enum):
     PERSONAL_INFO = "5"
     SCORE = "6"
     GRAPH = "7"
+    GRAPH_CAMPUS = "8"
 
 
 Vuodet = [
