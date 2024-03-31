@@ -76,7 +76,7 @@ def putItem(user_id, year, guild, campus, score):
             "score": score,
             "timestamp": timestamp_of_date,
             "ts_exact": timestamp,
-            "timezone": timezone,
+            "timezone": str(timezone),
         }
     )
 
@@ -92,7 +92,7 @@ def putItem(user_id, year, guild, campus, score):
                 "score": score,
                 "timestamp": timestamp_of_date,
                 "ts_exact": timestamp,
-                "timezone": timezone,
+                "timezone": str(timezone),
                 "user_id": user_id,
             }
         )
@@ -106,7 +106,7 @@ def putItem(user_id, year, guild, campus, score):
                 "score": score,
                 "timestamp": timestamp_of_date,
                 "ts_exact": timestamp,
-                "timezone": timezone,
+                "timezone": str(timezone),
                 "user_id": user_id,
             }
         )
