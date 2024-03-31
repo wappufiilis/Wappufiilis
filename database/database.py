@@ -3,6 +3,7 @@ import random
 from datetime import datetime
 
 import boto3
+import pytz
 from botocore.credentials import Credentials
 
 from utils import DatabaseKeys
@@ -61,7 +62,8 @@ def getUserInfo(user_id: str) -> dict:
 
 
 def putItem(user_id, year, guild, campus, score):
-    timestamp = int(datetime.now().timestamp())
+    timezone = pytz.timezone(os.getenv("TIMEZONE") or "Europe/Helsinki")
+    timestamp = int(datetime.now(timezone).timestamp())
     datestring = datetime.fromtimestamp(timestamp).strftime("%Y-%m-%d")
     timestamp_of_date = int(datetime.strptime(datestring, "%Y-%m-%d").timestamp())
     perUserTable = dynamodb.Table(os.getenv("DYNAMODB_EVENTS_TABLE_NAME"))
@@ -74,6 +76,7 @@ def putItem(user_id, year, guild, campus, score):
             "score": score,
             "timestamp": timestamp_of_date,
             "ts_exact": timestamp,
+            "timezone": timezone,
         }
     )
 
@@ -89,6 +92,7 @@ def putItem(user_id, year, guild, campus, score):
                 "score": score,
                 "timestamp": timestamp_of_date,
                 "ts_exact": timestamp,
+                "timezone": timezone,
                 "user_id": user_id,
             }
         )
@@ -102,6 +106,7 @@ def putItem(user_id, year, guild, campus, score):
                 "score": score,
                 "timestamp": timestamp_of_date,
                 "ts_exact": timestamp,
+                "timezone": timezone,
                 "user_id": user_id,
             }
         )

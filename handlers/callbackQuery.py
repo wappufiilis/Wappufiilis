@@ -1,5 +1,7 @@
 import datetime
+import os
 
+import pytz
 from telegram import InputMediaPhoto, Update, constants
 from telegram.ext import ContextTypes
 from telegram.helpers import escape_markdown
@@ -115,7 +117,8 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
         )
     elif menu == MenuKeys.RESULTS.value:
         # Convert timestamp to format YYYY-MM-DD
-        day = datetime.datetime.now().strftime("%Y-%m-%d")
+        timezone = pytz.timezone(os.getenv("TIMEZONE"))
+        day = datetime.datetime.now(timezone).strftime("%Y-%m-%d")
         average = getDayAverage(day=day)
         keyboard = MAIN_MENU_KEYBOARD(callbackData)
         await query.edit_message_media(
@@ -173,7 +176,8 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
         )
     elif menu == MenuKeys.GRAPH_CAMPUS.value:
         keyboard = GRAPH_KEYBOARD(callbackData)
-        current_hour = datetime.datetime.now().strftime("%Y-%m-%d-%H")
+        timezone = pytz.timezone(os.getenv("TIMEZONE"))
+        current_hour = datetime.datetime.now(timezone).strftime("%Y-%m-%d-%H")
         image_url = (
             f"https://wappufiilisweb.vercel.app/kappura/{current_hour}/campus/{campus}"
         )
@@ -188,7 +192,8 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
         )
     elif menu == MenuKeys.GRAPH_GUILD.value:
         keyboard = GRAPH_KEYBOARD(callbackData)
-        current_hour = datetime.datetime.now().strftime("%Y-%m-%d-%H")
+        timezone = pytz.timezone(os.getenv("TIMEZONE"))
+        current_hour = datetime.datetime.now(timezone).strftime("%Y-%m-%d-%H")
         image_url = f"https://wappufiilisweb.vercel.app/kappura/{current_hour}/campus/{campus}/guild/{guild}"
         await query.edit_message_media(
             media=InputMediaPhoto(media=image_url),
@@ -201,7 +206,8 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
         )
     elif menu == MenuKeys.GRAPH_YEAR.value:
         keyboard = GRAPH_KEYBOARD(callbackData)
-        current_hour = datetime.datetime.now().strftime("%Y-%m-%d-%H")
+        timezone = pytz.timezone(os.getenv("TIMEZONE"))
+        current_hour = datetime.datetime.now(timezone).strftime("%Y-%m-%d-%H")
         image_url = (
             f"https://wappufiilisweb.vercel.app/kappura/{current_hour}/year/{year}"
         )
