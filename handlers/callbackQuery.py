@@ -177,7 +177,6 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
         image_url = (
             f"https://wappufiilisweb.vercel.app/kappura/{current_hour}/campus/{campus}"
         )
-        print(image_url)
         await query.edit_message_media(
             media=InputMediaPhoto(media=image_url),
             reply_markup=keyboard,

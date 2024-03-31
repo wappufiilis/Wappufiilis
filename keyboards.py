@@ -13,9 +13,10 @@ from utils import (
     compressCallBackData,
 )
 
+PerPage = 9
+
 
 def CAMPUS_KEYBOARD(callBackData: dict):
-    print("got campus keyboard", callBackData)
     keyboard = list(
         chunks(
             [
@@ -34,8 +35,6 @@ def CAMPUS_KEYBOARD(callBackData: dict):
             3,
         )
     )
-
-    # Add option to go back
     keyboard.append(
         [
             InlineKeyboardButton(
@@ -53,8 +52,12 @@ def CAMPUS_KEYBOARD(callBackData: dict):
 
 
 def ASSOCIATION_KEYBOARD(callBackData: dict):
-    print("got ASSOCIATION_KEYBOARD", callBackData)
-
+    AllGuilds = Killat[callBackData[KeyboardKeys.CAMPUS.value]]
+    maxPagination = len(AllGuilds) // PerPage
+    pagination = min(
+        int(callBackData.get(KeyboardKeys.PAGINATION.value, 0)), maxPagination
+    )
+    paginatedGuilds = AllGuilds[pagination * PerPage : (pagination + 1) * PerPage]
     guildButtons = list(
         chunks(
             [
@@ -68,13 +71,39 @@ def ASSOCIATION_KEYBOARD(callBackData: dict):
                         }
                     ),
                 )
-                for guild in Killat[callBackData[KeyboardKeys.CAMPUS.value]]
+                for guild in paginatedGuilds
             ],
             3,
         )
     )
-
-    # Add option to go back
+    navigationButtons = []
+    if pagination > 0:
+        navigationButtons.append(
+            InlineKeyboardButton(
+                "<<",
+                callback_data=compressCallBackData(
+                    {
+                        **callBackData,
+                        KeyboardKeys.PAGINATION.value: pagination - 1,
+                        KeyboardKeys.MENU.value: MenuKeys.GUILD.value,
+                    }
+                ),
+            )
+        )
+    if pagination < maxPagination:
+        navigationButtons.append(
+            InlineKeyboardButton(
+                ">>",
+                callback_data=compressCallBackData(
+                    {
+                        **callBackData,
+                        KeyboardKeys.PAGINATION.value: pagination + 1,
+                        KeyboardKeys.MENU.value: MenuKeys.GUILD.value,
+                    }
+                ),
+            )
+        )
+    guildButtons.append(navigationButtons)
     guildButtons.append(
         [
             InlineKeyboardButton(
@@ -92,7 +121,6 @@ def ASSOCIATION_KEYBOARD(callBackData: dict):
 
 
 def YEAR_KEYBOARD(callBackData: dict):
-    print("got YEAR_KEYBOARD", callBackData)
     yearButtons = list(
         chunks(
             [
@@ -111,7 +139,6 @@ def YEAR_KEYBOARD(callBackData: dict):
             3,
         )
     )
-    # Add option to go back
     yearButtons.append(
         [
             InlineKeyboardButton(
