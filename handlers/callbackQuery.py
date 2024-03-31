@@ -220,3 +220,17 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
             parse_mode=constants.ParseMode.MARKDOWN_V2,
             reply_markup=keyboard,
         )
+    elif menu == MenuKeys.GRAPH_USER.value:
+        keyboard = GRAPH_KEYBOARD(callbackData)
+        timezone = pytz.timezone(os.getenv("TIMEZONE"))
+        current_hour = datetime.datetime.now(timezone).strftime("%Y-%m-%d-%H")
+        image_url = f"https://wappufiilisweb.vercel.app/kappura/{current_hour}/user/{query.from_user.id}"
+        await query.edit_message_media(
+            media=InputMediaPhoto(media=image_url),
+            reply_markup=keyboard,
+        )
+        await query.edit_message_caption(
+            caption=GRAPH_MESSAGE_USER,
+            parse_mode=constants.ParseMode.MARKDOWN_V2,
+            reply_markup=keyboard,
+        )

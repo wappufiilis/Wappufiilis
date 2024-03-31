@@ -287,7 +287,17 @@ def GRAPH_KEYBOARD(callBackData: dict):
     personalInfoButtons = list(
         chunks(
             (
-                []
+                [
+                    InlineKeyboardButton(
+                        "Graph of Your Scores",
+                        callback_data=compressCallBackData(
+                            {
+                                **callBackData,
+                                KeyboardKeys.MENU.value: MenuKeys.GRAPH_USER.value,
+                            }
+                        ),
+                    )
+                ]
                 + (
                     [
                         InlineKeyboardButton(

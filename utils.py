@@ -82,6 +82,7 @@ class MenuKeys(Enum):
     GRAPH_CAMPUS = "8"
     GRAPH_GUILD = "9"
     GRAPH_YEAR = "10"
+    GRAPH_USER = "11"
 
 
 Vuodet = [

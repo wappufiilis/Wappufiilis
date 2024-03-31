@@ -32,3 +32,7 @@ GRAPH_MESSAGE_GUILD = (
 GRAPH_MESSAGE_YEAR = (
     """Here is the graph of wappufiilis for all participants in year {}\."""
 )
+
+GRAPH_MESSAGE_USER = (
+    """Here is the graph of your own wappufiilis over the current season\."""
+)
