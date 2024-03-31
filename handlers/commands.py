@@ -17,9 +17,6 @@ async def home(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         user = saveUserInfo(update.message.from_user.id)
     message = BASE_MESSAGE.format(
         update.message.from_user.first_name,
-        user.get(DatabaseKeys.GUILD.value),
-        user.get(DatabaseKeys.YEAR.value),
-        user.get(DatabaseKeys.LAST_SCORE.value),
     )
 
     await update.message.reply_photo(

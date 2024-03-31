@@ -72,9 +72,6 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
         await query.edit_message_caption(
             caption=BASE_MESSAGE.format(
                 escape_markdown(query.from_user.first_name),
-                guild,
-                year,
-                score,
             ),
             parse_mode=constants.ParseMode.MARKDOWN_V2,
             reply_markup=keyboard,
