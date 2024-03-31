@@ -30,6 +30,11 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     timestamp = callbackData.get(KeyboardKeys.TIMESTAMP.value)
     newScore = callbackData.get(KeyboardKeys.NEW_SCORE.value)
     menu = callbackData.get(KeyboardKeys.MENU.value)
+
+    # Remove menu from callback data to enable back buttons
+    if menu:
+        callbackData.pop(KeyboardKeys.MENU.value)
+
     if newScore:
         score = newScore
         putItem(
@@ -54,15 +59,7 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
             year=year,
         )
     if not menu:
-        keyboard = MAIN_MENU_KEYBOARD(
-            {
-                KeyboardKeys.GUILD.value: guild,
-                KeyboardKeys.CAMPUS.value: campus,
-                KeyboardKeys.YEAR.value: year,
-                KeyboardKeys.SCORE.value: newScore,
-                KeyboardKeys.TIMESTAMP.value: timestamp,
-            }
-        )
+        keyboard = MAIN_MENU_KEYBOARD(callbackData)
         await query.edit_message_media(
             media=InputMediaPhoto(
                 media="https://wappufiilisweb.vercel.app/welcome.webp"
@@ -78,15 +75,7 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
         )
 
     elif menu == MenuKeys.CAMPUS.value:
-        keyboard = CAMPUS_KEYBOARD(
-            {
-                KeyboardKeys.GUILD.value: guild,
-                KeyboardKeys.CAMPUS.value: campus,
-                KeyboardKeys.YEAR.value: year,
-                KeyboardKeys.SCORE.value: newScore,
-                KeyboardKeys.TIMESTAMP.value: timestamp,
-            }
-        )
+        keyboard = CAMPUS_KEYBOARD(callbackData)
         await query.edit_message_media(
             media=InputMediaPhoto(
                 media="https://wappufiilisweb.vercel.app/welcome.webp"
@@ -99,15 +88,7 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
             reply_markup=keyboard,
         )
     elif menu == MenuKeys.GUILD.value:
-        keyboard = ASSOCIATION_KEYBOARD(
-            {
-                KeyboardKeys.GUILD.value: guild,
-                KeyboardKeys.CAMPUS.value: campus,
-                KeyboardKeys.YEAR.value: year,
-                KeyboardKeys.SCORE.value: newScore,
-                KeyboardKeys.TIMESTAMP.value: timestamp,
-            }
-        )
+        keyboard = ASSOCIATION_KEYBOARD(callbackData)
         await query.edit_message_media(
             media=InputMediaPhoto(
                 media="https://wappufiilisweb.vercel.app/guild_select.webp"
@@ -122,15 +103,7 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
             reply_markup=keyboard,
         )
     elif menu == MenuKeys.YEAR.value:
-        keyboard = YEAR_KEYBOARD(
-            {
-                KeyboardKeys.GUILD.value: guild,
-                KeyboardKeys.CAMPUS.value: campus,
-                KeyboardKeys.YEAR.value: year,
-                KeyboardKeys.SCORE.value: newScore,
-                KeyboardKeys.TIMESTAMP.value: timestamp,
-            }
-        )
+        keyboard = YEAR_KEYBOARD(callbackData)
         await query.edit_message_media(
             media=InputMediaPhoto(
                 media="https://wappufiilisweb.vercel.app/fucks_year.webp"
@@ -146,15 +119,7 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
         # Convert timestamp to format YYYY-MM-DD
         day = datetime.datetime.now().strftime("%Y-%m-%d")
         average = getDayAverage(day=day)
-        keyboard = MAIN_MENU_KEYBOARD(
-            {
-                KeyboardKeys.GUILD.value: guild,
-                KeyboardKeys.CAMPUS.value: campus,
-                KeyboardKeys.YEAR.value: year,
-                KeyboardKeys.SCORE.value: newScore,
-                KeyboardKeys.TIMESTAMP.value: timestamp,
-            }
-        )
+        keyboard = MAIN_MENU_KEYBOARD(callbackData)
         await query.edit_message_media(
             media=InputMediaPhoto(
                 media="https://wappufiilisweb.vercel.app/welcome.webp"
@@ -170,15 +135,7 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
             reply_markup=keyboard,
         )
     elif menu == MenuKeys.PERSONAL_INFO.value:
-        keyboard = PERSONAL_INFO_KEYBOARD(
-            {
-                KeyboardKeys.GUILD.value: guild,
-                KeyboardKeys.CAMPUS.value: campus,
-                KeyboardKeys.YEAR.value: year,
-                KeyboardKeys.SCORE.value: newScore,
-                KeyboardKeys.TIMESTAMP.value: timestamp,
-            }
-        )
+        keyboard = PERSONAL_INFO_KEYBOARD(callbackData)
         await query.edit_message_media(
             media=InputMediaPhoto(
                 media="https://wappufiilisweb.vercel.app/personal_info.webp"
@@ -191,15 +148,7 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
             reply_markup=keyboard,
         )
     elif menu == MenuKeys.SCORE.value:
-        keyboard = SCORE_KEYBOARD(
-            {
-                KeyboardKeys.GUILD.value: guild,
-                KeyboardKeys.CAMPUS.value: campus,
-                KeyboardKeys.YEAR.value: year,
-                KeyboardKeys.SCORE.value: newScore,
-                KeyboardKeys.TIMESTAMP.value: timestamp,
-            }
-        )
+        keyboard = SCORE_KEYBOARD(callbackData)
         await query.edit_message_media(
             media=InputMediaPhoto(
                 media="https://wappufiilisweb.vercel.app/measure.webp"
@@ -212,15 +161,7 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
             reply_markup=keyboard,
         )
     elif menu == MenuKeys.GRAPH.value:
-        keyboard = GRAPH_KEYBOARD(
-            {
-                KeyboardKeys.GUILD.value: guild,
-                KeyboardKeys.CAMPUS.value: campus,
-                KeyboardKeys.YEAR.value: year,
-                KeyboardKeys.SCORE.value: newScore,
-                KeyboardKeys.TIMESTAMP.value: timestamp,
-            }
-        )
+        keyboard = GRAPH_KEYBOARD(callbackData)
         current_hour = datetime.datetime.now().strftime("%Y-%m-%d-%H")
         image_url = f"https://wappufiilisweb.vercel.app/kappura/{current_hour}"
         await query.edit_message_media(
@@ -233,15 +174,7 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
             reply_markup=keyboard,
         )
     elif menu == MenuKeys.GRAPH_CAMPUS.value:
-        keyboard = GRAPH_KEYBOARD(
-            {
-                KeyboardKeys.GUILD.value: guild,
-                KeyboardKeys.CAMPUS.value: campus,
-                KeyboardKeys.YEAR.value: year,
-                KeyboardKeys.SCORE.value: newScore,
-                KeyboardKeys.TIMESTAMP.value: timestamp,
-            }
-        )
+        keyboard = GRAPH_KEYBOARD(callbackData)
         current_hour = datetime.datetime.now().strftime("%Y-%m-%d-%H")
         image_url = (
             f"https://wappufiilisweb.vercel.app/kappura/{current_hour}/campus/{campus}"
@@ -253,6 +186,34 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
         )
         await query.edit_message_caption(
             caption=GRAPH_MESSAGE_CAMPUS.format(Kampus(campus).name),
+            parse_mode=constants.ParseMode.MARKDOWN_V2,
+            reply_markup=keyboard,
+        )
+    elif menu == MenuKeys.GRAPH_GUILD.value:
+        keyboard = GRAPH_KEYBOARD(callbackData)
+        current_hour = datetime.datetime.now().strftime("%Y-%m-%d-%H")
+        image_url = f"https://wappufiilisweb.vercel.app/kappura/{current_hour}/campus/{campus}/guild/{guild}"
+        await query.edit_message_media(
+            media=InputMediaPhoto(media=image_url),
+            reply_markup=keyboard,
+        )
+        await query.edit_message_caption(
+            caption=GRAPH_MESSAGE_GUILD.format(guild),
+            parse_mode=constants.ParseMode.MARKDOWN_V2,
+            reply_markup=keyboard,
+        )
+    elif menu == MenuKeys.GRAPH_YEAR.value:
+        keyboard = GRAPH_KEYBOARD(callbackData)
+        current_hour = datetime.datetime.now().strftime("%Y-%m-%d-%H")
+        image_url = (
+            f"https://wappufiilisweb.vercel.app/kappura/{current_hour}/year/{year}"
+        )
+        await query.edit_message_media(
+            media=InputMediaPhoto(media=image_url),
+            reply_markup=keyboard,
+        )
+        await query.edit_message_caption(
+            caption=GRAPH_MESSAGE_YEAR.format(year),
             parse_mode=constants.ParseMode.MARKDOWN_V2,
             reply_markup=keyboard,
         )
