@@ -36,7 +36,7 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
         callbackData.pop(KeyboardKeys.MENU.value)
 
     if newScore:
-        score = newScore
+        callbackData.pop(KeyboardKeys.NEW_SCORE.value)
         putItem(
             user_id=query.from_user.id,
             year=year,
