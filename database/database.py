@@ -64,7 +64,7 @@ def getUserInfo(user_id: str) -> dict:
 def putItem(user_id, year, guild, campus, score):
     timestamp = int(datetime.now().timestamp())
     datestring = datetime.fromtimestamp(timestamp).strftime("%Y-%m-%d")
-
+    timestamp_of_date = int(datetime.strptime(datestring, "%Y-%m-%d").timestamp())
     perUserTable = dynamodb.Table(os.getenv("DYNAMODB_EVENTS_TABLE_NAME"))
     perUserTable.put_item(
         Item={
@@ -73,7 +73,8 @@ def putItem(user_id, year, guild, campus, score):
             "guild": guild,
             "campus": campus,
             "score": score,
-            "timestamp": timestamp,
+            "timestamp": timestamp_of_date,
+            "ts_exact": timestamp,
         }
     )
 
@@ -87,7 +88,8 @@ def putItem(user_id, year, guild, campus, score):
                 "year": year,
                 "campus": campus,
                 "score": score,
-                "timestamp": timestamp,
+                "timestamp": timestamp_of_date,
+                "ts_exact": timestamp,
                 "user_id": user_id,
             }
         )
@@ -99,7 +101,8 @@ def putItem(user_id, year, guild, campus, score):
                 "year": year,
                 "campus": campus,
                 "score": score,
-                "timestamp": timestamp,
+                "timestamp": timestamp_of_date,
+                "ts_exact": timestamp,
                 "user_id": user_id,
             }
         )
