@@ -26,7 +26,6 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     guild = callbackData.get(KeyboardKeys.GUILD.value)
     campus = callbackData.get(KeyboardKeys.CAMPUS.value)
     year = callbackData.get(KeyboardKeys.YEAR.value)
-    score = callbackData.get(KeyboardKeys.SCORE.value)
     timestamp = callbackData.get(KeyboardKeys.TIMESTAMP.value)
     newScore = callbackData.get(KeyboardKeys.NEW_SCORE.value)
     menu = callbackData.get(KeyboardKeys.MENU.value)
@@ -49,7 +48,6 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
             campus=campus,
             guild=guild,
             year=year,
-            newScore=newScore,
         )
     elif not menu:
         saveUserInfo(

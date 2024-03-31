@@ -25,35 +25,22 @@ def saveUserInfo(
     campus: str = None,
     guild: str = None,
     year: str = None,
-    newScore: str = None,
 ):
     """
     Save user info, if user already exists, update the info
     """
     table = dynamodb.Table(os.getenv("DYNAMODB_USERS_TABLE_NAME"))
     user = {}
-    if newScore:
-        user = getUserInfo(user_id)
-        table.update_item(
-            Key={"user_id": str(user_id)},
-            UpdateExpression="set last_score=:s, scores=:sc",
-            ExpressionAttributeValues={
-                ":s": newScore,
-                ":sc": user.get(DatabaseKeys.SCORES.value, []) + [newScore],
-            },
-            ReturnValues="NONE",
-        )
-    else:
-        table.update_item(
-            Key={"user_id": str(user_id)},
-            UpdateExpression="set campus=:c, guild=:g, study_year=:y",
-            ExpressionAttributeValues={
-                ":c": campus,
-                ":g": guild,
-                ":y": year,
-            },
-            ReturnValues="NONE",
-        )
+    table.update_item(
+        Key={"user_id": str(user_id)},
+        UpdateExpression="set campus=:c, guild=:g, study_year=:y",
+        ExpressionAttributeValues={
+            ":c": campus,
+            ":g": guild,
+            ":y": year,
+        },
+        ReturnValues="NONE",
+    )
     return user
 
 
