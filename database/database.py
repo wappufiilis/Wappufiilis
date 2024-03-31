@@ -78,7 +78,6 @@ def putItem(user_id, year, guild, campus, score):
     table = dynamodb.Table(os.getenv("DYNAMODB_EVENTS_TABLE_NAME"))
     timestamp = int(datetime.now().timestamp())
     datestring = datetime.fromtimestamp(timestamp).strftime("%Y-%m-%d")
-    rand = random.randint(0, 100000)
     table.put_item(
         Item={
             "partition_key": f"{user_id}::{datestring}",
