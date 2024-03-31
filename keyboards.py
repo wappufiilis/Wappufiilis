@@ -260,7 +260,53 @@ def GRAPH_KEYBOARD(callBackData: dict):
     personalInfoButtons = list(
         chunks(
             (
-                [
+                []
+                + (
+                    [
+                        InlineKeyboardButton(
+                            f"Graph for Your Campus {Kampus(callBackData.get(KeyboardKeys.CAMPUS.value)).name}",
+                            callback_data=compressCallBackData(
+                                {
+                                    **callBackData,
+                                    KeyboardKeys.MENU.value: MenuKeys.GRAPH_CAMPUS.value,
+                                }
+                            ),
+                        )
+                    ]
+                    if callBackData.get(KeyboardKeys.CAMPUS.value)
+                    else []
+                )
+                + (
+                    [
+                        InlineKeyboardButton(
+                            f"Graph for Your Guild {callBackData.get(KeyboardKeys.GUILD.value, 'None')}",
+                            callback_data=compressCallBackData(
+                                {
+                                    **callBackData,
+                                    KeyboardKeys.MENU.value: MenuKeys.GRAPH_GUILD.value,
+                                }
+                            ),
+                        )
+                    ]
+                    if callBackData.get(KeyboardKeys.GUILD.value)
+                    else []
+                )
+                + (
+                    [
+                        InlineKeyboardButton(
+                            f"Graph for Your Year {callBackData.get(KeyboardKeys.YEAR.value, 'None')}",
+                            callback_data=compressCallBackData(
+                                {
+                                    **callBackData,
+                                    KeyboardKeys.MENU.value: MenuKeys.GRAPH_YEAR.value,
+                                }
+                            ),
+                        )
+                    ]
+                    if callBackData.get(KeyboardKeys.YEAR.value)
+                    else []
+                )
+                + [
                     InlineKeyboardButton(
                         "Back",
                         callback_data=compressCallBackData(
@@ -270,19 +316,6 @@ def GRAPH_KEYBOARD(callBackData: dict):
                         ),
                     ),
                 ]
-                + [
-                    InlineKeyboardButton(
-                        f"Graph for Your Campus {Kampus(callBackData.get(KeyboardKeys.CAMPUS.value).name, 'None')}",
-                        callback_data=compressCallBackData(
-                            {
-                                **callBackData,
-                                KeyboardKeys.MENU.value: MenuKeys.GRAPH_CAMPUS.value,
-                            }
-                        ),
-                    )
-                ]
-                if callBackData.get(KeyboardKeys.CAMPUS.value)
-                else []
             ),
             1,
         )

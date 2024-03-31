@@ -24,3 +24,11 @@ GRAPH_MESSAGE = """Here is the graph of wappufiilis for all participants\."""
 GRAPH_MESSAGE_CAMPUS = (
     """Here is the graph of wappufiilis for all participants in {}\."""
 )
+
+GRAPH_MESSAGE_GUILD = (
+    """Here is the graph of wappufiilis for all participants in {}\."""
+)
+
+GRAPH_MESSAGE_YEAR = (
+    """Here is the graph of wappufiilis for all participants in year {}\."""
+)
