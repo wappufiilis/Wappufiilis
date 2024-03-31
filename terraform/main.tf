@@ -70,10 +70,12 @@ resource "aws_lambda_function" "lambda" {
 
   environment {
     variables = {
-      TOKEN                      = var.telegram_token
-      TIMEZONE                   = "Europe/Helsinki"
-      DYNAMODB_EVENTS_TABLE_NAME = module.analytics.table_name
-      DYNAMODB_USERS_TABLE_NAME  = aws_dynamodb_table.user_data.name
+      TOKEN                                = var.telegram_token
+      TIMEZONE                             = "Europe/Helsinki"
+      DYNAMODB_EVENTS_TABLE_NAME           = module.analytics.table_name
+      DYNAMODB_USERS_TABLE_NAME            = aws_dynamodb_table.user_data.name
+      DYNAMODB_EVENTS_PER_GUILD_TABLE_NAME = module.analytics.per_guild_table_name
+      DYNAMODB_EVENTS_PER_YEAR_TABLE_NAME  = module.analytics.per_year_table_name
     }
   }
   depends_on = [aws_iam_role_policy_attachment.lambda_logs, aws_cloudwatch_log_group.example]
