@@ -185,15 +185,15 @@ def MAIN_MENU_KEYBOARD(callBackData: dict):
                         }
                     ),
                 ),
-                InlineKeyboardButton(
-                    "Today's Average",
-                    callback_data=compressCallBackData(
-                        {
-                            **callBackData,
-                            KeyboardKeys.MENU.value: MenuKeys.RESULTS.value,
-                        }
-                    ),
-                ),
+                # InlineKeyboardButton(
+                #     "Today's Average",
+                #     callback_data=compressCallBackData(
+                #         {
+                #             **callBackData,
+                #             KeyboardKeys.MENU.value: MenuKeys.RESULTS.value,
+                #         }
+                #     ),
+                # ),
                 InlineKeyboardButton(
                     "Graphs",
                     callback_data=compressCallBackData(
