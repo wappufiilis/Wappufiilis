@@ -186,7 +186,7 @@ def MAIN_MENU_KEYBOARD(callBackData: dict):
                     ),
                 ),
                 InlineKeyboardButton(
-                    "Results",
+                    "Today's Average",
                     callback_data=compressCallBackData(
                         {
                             **callBackData,
