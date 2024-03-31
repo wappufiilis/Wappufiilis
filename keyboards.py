@@ -215,7 +215,7 @@ def PERSONAL_INFO_KEYBOARD(callBackData: dict):
         chunks(
             [
                 InlineKeyboardButton(
-                    "Select campus",
+                    f"Select campus and guild (Current: {callBackData.get(KeyboardKeys.CAMPUS.value, 'None')}, {callBackData.get(KeyboardKeys.GUILD.value, 'None')})",
                     callback_data=compressCallBackData(
                         {
                             **callBackData,
@@ -233,7 +233,7 @@ def PERSONAL_INFO_KEYBOARD(callBackData: dict):
                 #    ),
                 # ),
                 InlineKeyboardButton(
-                    "Select fuksi year",
+                    f"Select fuksi year (Current: {callBackData.get(KeyboardKeys.YEAR.value, 'None')})",
                     callback_data=compressCallBackData(
                         {
                             **callBackData,
