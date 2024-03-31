@@ -33,6 +33,7 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     if newScore:
         score = newScore
         putItem(
+            user_id=query.from_user.id,
             year=year,
             guild=guild,
             campus=campus,
