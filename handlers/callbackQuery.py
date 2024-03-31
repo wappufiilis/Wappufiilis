@@ -22,7 +22,6 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     query = update.callback_query
     await query.answer()
     callbackData = decompressCallBackData(query.data)
-    print("callback data is", callbackData)
     guild = callbackData.get(KeyboardKeys.GUILD.value)
     campus = callbackData.get(KeyboardKeys.CAMPUS.value)
     year = callbackData.get(KeyboardKeys.YEAR.value)
@@ -223,7 +222,6 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
         )
         current_hour = datetime.datetime.now().strftime("%Y-%m-%d-%H")
         image_url = f"https://wappufiilisweb.vercel.app/kappura/{current_hour}"
-        print(image_url)
         await query.edit_message_media(
             media=InputMediaPhoto(media=image_url),
             reply_markup=keyboard,
