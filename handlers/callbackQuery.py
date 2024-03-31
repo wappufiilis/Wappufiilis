@@ -4,7 +4,7 @@ from telegram import InputMediaPhoto, Update, constants
 from telegram.ext import ContextTypes
 from telegram.helpers import escape_markdown
 
-from database.database import getDayAverage, getGuildDayAverage, putItem, saveUserInfo
+from database.database import getDayAverage, putItem, saveUserInfo
 from keyboards import (
     ASSOCIATION_KEYBOARD,
     CAMPUS_KEYBOARD,
