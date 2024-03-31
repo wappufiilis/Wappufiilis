@@ -100,10 +100,14 @@ def getAverage(day: str, guild: str = None) -> float:
     guild: str - guild name
     """
     start_of_day = int(
-        datetime.strptime(day, "%Y-%m-%d").replace(hour=0, minute=0, second=0).timestamp()
+        datetime.strptime(day, "%Y-%m-%d")
+        .replace(hour=0, minute=0, second=0)
+        .timestamp()
     )
     end_of_day = int(
-        datetime.strptime(day, "%Y-%m-%d").replace(hour=23, minute=59, second=59).timestamp()
+        datetime.strptime(day, "%Y-%m-%d")
+        .replace(hour=23, minute=59, second=59)
+        .timestamp()
     )
 
     table = dynamodb.Table(os.getenv("DYNAMODB_EVENTS_TABLE_NAME"))
@@ -120,7 +124,9 @@ def getAverage(day: str, guild: str = None) -> float:
     else:
         # Use sort index "timestamp" to get all items for the day
         response = table.scan(
-            FilterExpression=boto3.dynamodb.conditions.Attr('timestamp').between(start_of_day, end_of_day)
+            FilterExpression=boto3.dynamodb.conditions.Attr("timestamp").between(
+                start_of_day, end_of_day
+            )
         )
     items = response["Items"]
     if items:
