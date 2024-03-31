@@ -52,3 +52,57 @@ resource "aws_dynamodb_table" "time_series_data" {
   }
 
 }
+
+resource "aws_dynamodb_table" "per_user_data" {
+  name         = "FiilisData_PerUser_${var.environment}"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "partition_key"
+  range_key    = "timestamp"
+
+  attribute {
+    name = "partition_key"
+    type = "S"
+  }
+
+  attribute {
+    name = "timestamp"
+    type = "N"
+  }
+
+}
+
+resource "aws_dynamodb_table" "per_guild_data" {
+  name         = "FiilisData_PerGuild_${var.environment}"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "partition_key"
+  range_key    = "timestamp"
+
+  attribute {
+    name = "partition_key"
+    type = "S"
+  }
+
+  attribute {
+    name = "timestamp"
+    type = "N"
+  }
+
+}
+
+resource "aws_dynamodb_table" "per_year_data" {
+  name         = "FiilisData_PerYear_${var.environment}"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "partition_key"
+  range_key    = "timestamp"
+
+  attribute {
+    name = "partition_key"
+    type = "S"
+  }
+
+  attribute {
+    name = "timestamp"
+    type = "N"
+  }
+
+}
