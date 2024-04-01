@@ -238,11 +238,14 @@ def MAIN_MENU_KEYBOARD(callBackData: dict):
 
 
 def PERSONAL_INFO_KEYBOARD(callBackData: dict):
+    currentCampus = Kampus(
+        callBackData.get(KeyboardKeys.CAMPUS.value, "None")
+    ).name.capitalize()
     personalInfoButtons = list(
         chunks(
             [
                 InlineKeyboardButton(
-                    f"Select campus and guild (Current: {Kampus(callBackData.get(KeyboardKeys.CAMPUS.value, 'None')).name}, {callBackData.get(KeyboardKeys.GUILD.value, 'None')})",
+                    f"Select campus and guild (Current: {currentCampus}, {callBackData.get(KeyboardKeys.GUILD.value, 'None')})",
                     callback_data=compressCallBackData(
                         {
                             **callBackData,

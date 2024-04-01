@@ -114,6 +114,7 @@ class Kampus(Enum):
     VAASA = "6"
     JYVÄSKYLÄ = "7"
     OTHER = "99"
+    NONE = "None"
 
 
 Killat = {
