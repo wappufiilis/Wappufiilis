@@ -53,7 +53,7 @@ def CAMPUS_KEYBOARD(callBackData: dict):
 
 def ASSOCIATION_KEYBOARD(callBackData: dict):
     AllGuilds = Killat[callBackData[KeyboardKeys.CAMPUS.value]]
-    maxPagination = len(AllGuilds) // PerPage
+    maxPagination = (len(AllGuilds) - 1) // PerPage
     pagination = min(
         int(callBackData.get(KeyboardKeys.PAGINATION.value, 0)), maxPagination
     )

@@ -23,7 +23,6 @@ import json
 
 
 def compressCallBackData(data: dict):
-    # data to csv string
     csv = ""
     for i in range(1 + max(int(number.value) for number in KeyboardKeys)):
         if str(i) in data:
@@ -34,6 +33,8 @@ def compressCallBackData(data: dict):
     csv_str = csv.encode("utf-8")
     compressed = gzip.compress(csv_str)
     encoded = base64.b64encode(compressed).decode("utf-8")
+    # print(data, "Compressed data: ", encoded)
+    # Long names are too long. figure how to compress more.
     return encoded
 
 
@@ -112,6 +113,7 @@ class Kampus(Enum):
     TURKU = "5"
     VAASA = "6"
     JYVÄSKYLÄ = "7"
+    OTHER = "99"
 
 
 Killat = {
@@ -155,7 +157,7 @@ Killat = {
         "Sätky",
     ],
     Kampus.OULU.value: [
-        "Arkkitehtikilta",
+        "AK",
         "Kone",
         "OPTIEM",
         "OTiT",
@@ -165,7 +167,7 @@ Killat = {
         "OLTO",
     ],
     Kampus.TAMPERE.value: [
-        "Arkkitehtikilta",
+        "TamArk",
         "Autek",
         "Bioner",
         "Indecs",
@@ -192,6 +194,9 @@ Killat = {
     Kampus.VAASA.value: ["Tutti ry"],
     Kampus.JYVÄSKYLÄ.value: [
         "Algo",
+    ],
+    Kampus.OTHER.value: [
+        "Other",
     ],
 }
 

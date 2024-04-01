@@ -1,4 +1,4 @@
-BASE_MESSAGE = """Hi {}, track you wappufiilis with me\!
+BASE_MESSAGE = """Hi {}, track your wappufiilis with me\!
 """
 
 CAMPUS_SELECT = """Please select your campus\."""
