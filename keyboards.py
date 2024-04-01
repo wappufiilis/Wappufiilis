@@ -292,14 +292,23 @@ def GRAPH_KEYBOARD(callBackData: dict):
             (
                 [
                     InlineKeyboardButton(
-                        "Graph of Your Scores",
+                        "Graph of All Users",
+                        callback_data=compressCallBackData(
+                            {
+                                **callBackData,
+                                KeyboardKeys.MENU.value: MenuKeys.GRAPH.value,
+                            }
+                        ),
+                    ),
+                    InlineKeyboardButton(
+                        "Graph of Your Own Scores",
                         callback_data=compressCallBackData(
                             {
                                 **callBackData,
                                 KeyboardKeys.MENU.value: MenuKeys.GRAPH_USER.value,
                             }
                         ),
-                    )
+                    ),
                 ]
                 + (
                     [
