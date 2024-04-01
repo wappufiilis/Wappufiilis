@@ -304,7 +304,7 @@ def GRAPH_KEYBOARD(callBackData: dict):
                 + (
                     [
                         InlineKeyboardButton(
-                            f"Graph for Your Campus {Kampus(callBackData.get(KeyboardKeys.CAMPUS.value)).name}",
+                            f"Graph for Your Campus {Kampus(callBackData.get(KeyboardKeys.CAMPUS.value)).name.capitalize()}",
                             callback_data=compressCallBackData(
                                 {
                                     **callBackData,
