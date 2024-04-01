@@ -23,9 +23,9 @@ dynamodb = boto3.resource("dynamodb", region_name=os.getenv("AWS_DEFAULT_REGION"
 
 def saveUserInfo(
     user_id: str,
-    campus: str = None,
-    guild: str = None,
-    year: str = None,
+    campus: str = "",
+    guild: str = "",
+    year: str = "",
 ):
     """
     Save user info, if user already exists, update the info

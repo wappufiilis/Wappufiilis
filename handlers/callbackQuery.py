@@ -25,9 +25,9 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     query = update.callback_query
     await query.answer()
     callbackData = decompressCallBackData(query.data)
-    guild = callbackData.get(KeyboardKeys.GUILD.value)
-    campus = callbackData.get(KeyboardKeys.CAMPUS.value)
-    year = callbackData.get(KeyboardKeys.YEAR.value)
+    guild = callbackData.get(KeyboardKeys.GUILD.value, "")
+    campus = callbackData.get(KeyboardKeys.CAMPUS.value, "")
+    year = callbackData.get(KeyboardKeys.YEAR.value, "")
     timestamp = callbackData.get(KeyboardKeys.TIMESTAMP.value)
     newScore = callbackData.get(KeyboardKeys.NEW_SCORE.value)
     menu = callbackData.get(KeyboardKeys.MENU.value)

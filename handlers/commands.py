@@ -24,10 +24,10 @@ async def home(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         caption=message,
         reply_markup=MAIN_MENU_KEYBOARD(
             {
-                KeyboardKeys.GUILD.value: user.get(DatabaseKeys.GUILD.value),
-                KeyboardKeys.CAMPUS.value: user.get(DatabaseKeys.CAMPUS.value),
-                KeyboardKeys.YEAR.value: user.get(DatabaseKeys.YEAR.value),
-                KeyboardKeys.SCORE.value: user.get(DatabaseKeys.LAST_SCORE.value),
+                KeyboardKeys.GUILD.value: user.get(DatabaseKeys.GUILD.value, ""),
+                KeyboardKeys.CAMPUS.value: user.get(DatabaseKeys.CAMPUS.value, ""),
+                KeyboardKeys.YEAR.value: user.get(DatabaseKeys.YEAR.value, ""),
+                KeyboardKeys.SCORE.value: user.get(DatabaseKeys.LAST_SCORE.value, ""),
             }
         ),
         parse_mode=constants.ParseMode.MARKDOWN_V2,
