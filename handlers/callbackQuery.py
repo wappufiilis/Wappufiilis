@@ -53,6 +53,15 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
             year=year,
         )
     if not menu:
+        message = (
+            BASE_MESSAGE.format(
+                escape_markdown(query.from_user.first_name),
+            )
+            if not newScore
+            else SCORE_SUBMITTED_MESSAGE.format(
+                newScore,
+            )
+        )
         keyboard = MAIN_MENU_KEYBOARD(callbackData)
         await query.edit_message_media(
             media=InputMediaPhoto(
@@ -61,9 +70,7 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
             reply_markup=keyboard,
         )
         await query.edit_message_caption(
-            caption=BASE_MESSAGE.format(
-                escape_markdown(query.from_user.first_name),
-            ),
+            caption=message,
             parse_mode=constants.ParseMode.MARKDOWN_V2,
             reply_markup=keyboard,
         )

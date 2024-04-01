@@ -21,6 +21,8 @@ This information is used to create graphs specific to a given campus, guild or y
 
 SCORE_MESSAGE = """Enter your wappufiilis for today\."""
 
+SCORE_SUBMITTED_MESSAGE = """Score of {} submitted succesfully\! Maybe take a look at the graphs for today next\?"""
+
 GRAPH_MESSAGE = """Here is the graph of wappufiilis for all participants\.{}"""
 
 PERSONAL_INFO_UPDATE_NOTICE = """
