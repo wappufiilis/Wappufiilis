@@ -157,6 +157,9 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
         )
     elif menu == MenuKeys.GRAPH.value:
         keyboard = GRAPH_KEYBOARD(callbackData)
+        personal_info_update_notice = ""
+        if not guild or not campus or not year:
+            personal_info_update_notice = PERSONAL_INFO_UPDATE_NOTICE
         current_hour = datetime.datetime.now().strftime("%Y-%m-%d-%H")
         image_url = f"https://wappufiilisweb.vercel.app/kappura/{current_hour}"
         await query.edit_message_media(
@@ -164,7 +167,7 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
             reply_markup=keyboard,
         )
         await query.edit_message_caption(
-            caption=GRAPH_MESSAGE,
+            caption=GRAPH_MESSAGE.format(personal_info_update_notice),
             parse_mode=constants.ParseMode.MARKDOWN_V2,
             reply_markup=keyboard,
         )

@@ -15,11 +15,17 @@ SELECT_YEAR_GUILD = """Please tell me your fuksi year in {}\."""
 RESULTS_MESSAGE = """Overall average wappufiilis for today: {}/10
 Your guild's average wappufiilis for today: {}/10"""
 
-PERSONAL_INFO = """Adjust your user information here\."""
+PERSONAL_INFO = """Adjust your user information here\.
+
+This information is used to create graphs specific to a given campus, guild or year\. Adding this info will enable these graphs for you as well\!"""
 
 SCORE_MESSAGE = """Enter your wappufiilis for today\."""
 
-GRAPH_MESSAGE = """Here is the graph of wappufiilis for all participants\."""
+GRAPH_MESSAGE = """Here is the graph of wappufiilis for all participants\.{}"""
+
+PERSONAL_INFO_UPDATE_NOTICE = """
+
+By adding personal info about your campus, guild and year, you can get access to their relative graphs\."""
 
 GRAPH_MESSAGE_CAMPUS = (
     """Here is the graph of wappufiilis for all participants in {}\."""
