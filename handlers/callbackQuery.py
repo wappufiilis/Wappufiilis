@@ -45,12 +45,6 @@ async def meta_inline_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -
             campus=campus,
             score=newScore,
         )
-        saveUserInfo(
-            user_id=query.from_user.id,
-            campus=campus,
-            guild=guild,
-            year=year,
-        )
     elif not menu:
         saveUserInfo(
             user_id=query.from_user.id,
