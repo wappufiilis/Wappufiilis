@@ -139,6 +139,7 @@ Killat = {
         "NuDe",
         "PJK",
         "Prodeko",
+        "PT",
         "SIK",
         "Sistä",
         "TF",
@@ -164,7 +165,7 @@ Killat = {
         "OTiT",
         "Prose",
         "SIK",
-        "YMP",
+        "YRK",
         "OLTO",
     ],
     Kampus.TAMPERE.value: [
