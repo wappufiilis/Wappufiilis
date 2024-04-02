@@ -141,7 +141,7 @@ Killat = {
         "Prodeko",
         "PT",
         "SIK",
-        "Sistä",
+        "SISTA",
         "TF",
         "TiK",
         "TOKYO",
