@@ -6,16 +6,12 @@ from dotenv import load_dotenv
 
 load_dotenv()  # take environment variables from .env.
 
-from telegram import Update, constants
+from telegram import Update
 from telegram.ext import (
     Application,
-    CallbackContext,
     CallbackQueryHandler,
     CommandHandler,
-    ContextTypes,
     ConversationHandler,
-    MessageHandler,
-    filters,
 )
 
 from handlers.callbackQuery import meta_inline_menu

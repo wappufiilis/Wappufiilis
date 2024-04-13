@@ -1,5 +1,5 @@
 import base64
-import hashlib
+import gzip
 import json
 from enum import Enum
 
@@ -15,11 +15,6 @@ def userToCallbackData(user: dict):
         f"campus::{user['campus']}::guild::{user['guild']}::year::{user['year']}"
     )
     return json.dumps(user)
-
-
-import base64
-import gzip
-import json
 
 
 def compressCallBackData(data: dict):

@@ -1,12 +1,9 @@
 import os
-import random
 from datetime import datetime
 
 import boto3
 import pytz
 from botocore.credentials import Credentials
-
-from utils import DatabaseKeys
 
 creds = Credentials(
     access_key=os.getenv("AWS_ACCESS_KEY_ID"),

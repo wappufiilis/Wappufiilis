@@ -1,6 +1,3 @@
-import hashlib
-import json
-
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
 from utils import (
