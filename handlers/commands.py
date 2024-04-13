@@ -1,12 +1,9 @@
-import datetime
-
 from telegram import Update, constants
 from telegram.ext import ContextTypes
 
 from database.database import getUserInfo, saveUserInfo
-from handlers.callbackQuery import meta_inline_menu
 from keyboards import MAIN_MENU_KEYBOARD, SCORE_KEYBOARD
-from messages import BASE_MESSAGE, RESULTS_MESSAGE
+from messages import BASE_MESSAGE
 from utils import DatabaseKeys, KeyboardKeys
 
 
