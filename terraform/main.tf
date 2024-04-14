@@ -55,6 +55,7 @@ resource "aws_dynamodb_table" "user_data" {
     type = "S"
   }
 }
+
 resource "aws_lambda_function" "lambda" {
   filename      = "lambda_function_payload.zip"
   function_name = "wappufiilis_bot_lambda_${var.environment}"
@@ -80,6 +81,33 @@ resource "aws_lambda_function" "lambda" {
   }
   depends_on = [aws_iam_role_policy_attachment.lambda_logs, aws_cloudwatch_log_group.example]
 }
+
+resource "aws_lambda_function" "reminder_lambda" {
+  filename      = "lambda_function_payload.zip"
+  function_name = "wappufiilis_bot_lambda_reminder_${var.environment}"
+  role          = aws_iam_role.iam_for_lambda.arn
+  handler       = "reminder"
+
+  runtime = "python3.9"
+
+  # The filebase64sha256() function is available in Terraform 0.11.12 and later
+  # For Terraform 0.11.11 and earlier, use the base64sha256() function and the file() function:
+  # source_code_hash = "${base64sha256(file("lambda_function_payload.zip"))}"
+  source_code_hash = filebase64sha256("lambda_function_payload.zip")
+
+  environment {
+    variables = {
+      TOKEN                                = var.telegram_token
+      TIMEZONE                             = "Europe/Helsinki"
+      DYNAMODB_EVENTS_TABLE_NAME           = module.analytics.table_name
+      DYNAMODB_USERS_TABLE_NAME            = aws_dynamodb_table.user_data.name
+      DYNAMODB_EVENTS_PER_GUILD_TABLE_NAME = module.analytics.per_guild_data_table_name
+      DYNAMODB_EVENTS_PER_YEAR_TABLE_NAME  = module.analytics.per_year_data_table_name
+    }
+  }
+  depends_on = [aws_iam_role_policy_attachment.lambda_logs, aws_cloudwatch_log_group.example]
+}
+
 
 resource "aws_iam_policy" "lambda_dynamodb" {
   name        = "lambda_dynamodb_${var.environment}"
@@ -192,3 +220,24 @@ resource "aws_lambda_permission" "apigw" {
 data "httpclient_request" "webhook_register" {
   url = "https://api.telegram.org/bot${var.telegram_token}/setWebhook?url=${aws_apigatewayv2_api.api.api_endpoint}/${random_id.random_path.hex}/"
 }
+
+resource "aws_cloudwatch_event_rule" "every_minute" {
+  name                = "every-minute"
+  description         = "Trigger every minute"
+  schedule_expression = "cron(0/1 * * * ? *)" # Every minute
+}
+
+resource "aws_cloudwatch_event_target" "invoke_lambda_every_minute" {
+  rule      = aws_cloudwatch_event_rule.every_minute.name
+  target_id = "SendReminderLambda"
+  arn       = aws_lambda_function.reminder_lambda.arn
+}
+
+resource "aws_lambda_permission" "allow_event_bridge" {
+  statement_id  = "AllowExecutionFromCloudWatch"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.reminder_lambda.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.every_minute.arn
+}
+
