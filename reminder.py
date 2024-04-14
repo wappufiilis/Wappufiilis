@@ -45,5 +45,9 @@ async def reminder():
             )
 
 
+def lambda_handler(event, context):
+    asyncio.run(reminder())
+
+
 if __name__ == "__main__":
     asyncio.run(reminder())
