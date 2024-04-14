@@ -148,7 +148,7 @@ resource "aws_iam_policy" "lambda_dynamodb_reminder" {
   "Statement": [
     {
       "Action": [
-        "dynamodb:ScanItem"
+        "dynamodb:Scan"
       ],
       "Resource": "*",
       "Effect": "Allow"
