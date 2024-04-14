@@ -36,3 +36,5 @@ GRAPH_MESSAGE_YEAR = (
 GRAPH_MESSAGE_USER = (
     """Here is the graph of your own wappufiilis over the current season\."""
 )
+
+REMINDER_MESSAGE = """Reminder \- it's time to update your wappufiilis\!"""

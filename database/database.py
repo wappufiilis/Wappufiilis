@@ -61,6 +61,15 @@ def getUserInfo(user_id: str) -> dict:
         return None
 
 
+def getUsers() -> dict:
+    """
+    Get all users
+    """
+    table = dynamodb.Table(os.getenv("DYNAMODB_USERS_TABLE_NAME"))
+    response = table.scan()
+    return response["Items"]
+
+
 def putItem(user_id, year, guild, campus, score):
     timezone = pytz.timezone(os.getenv("TIMEZONE") or "Europe/Helsinki")
     timestamp = int(datetime.now(timezone).timestamp())
