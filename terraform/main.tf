@@ -222,7 +222,7 @@ data "httpclient_request" "webhook_register" {
 }
 
 resource "aws_cloudwatch_event_rule" "every_minute" {
-  name                = "every-minute"
+  name                = "every-minute-${var.environment}"
   description         = "Trigger every minute"
   schedule_expression = "cron(0/1 * * * ? *)" # Every minute
 }
