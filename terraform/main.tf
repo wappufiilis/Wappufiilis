@@ -138,7 +138,7 @@ resource "aws_iam_role_policy_attachment" "lambda_dynamodb" {
 }
 
 resource "aws_iam_policy" "lambda_dynamodb_reminder" {
-  name        = "lambda_dynamodb_${var.environment}"
+  name        = "lambda_reminder_dynamodb_${var.environment}"
   path        = "/"
   description = "IAM policy for scanning items from DynamoDB for a lambda"
 
